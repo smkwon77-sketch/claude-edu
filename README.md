@@ -2,7 +2,7 @@
 
 직원용 주소: https://smkwon77-sketch.github.io/claude-edu/
 
-- `index.html` — 교육 페이지 (18단계, 연습용 모형 화면 포함)
+- `index.html` — 교육 페이지 (20단계, 연습용 모형 화면 포함)
 - `files/claude-card.pdf`, `files/claude-card.docx` — 인쇄용 요약카드
 
 ## 고쳐서 다시 올리는 법

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="(주)팬직 직원용 Claude 따라하기 교실 — 가입·설치부터 재고 현황판, GitHub 주소 공유까지 18단계">
+<meta name="description" content="(주)팬직 직원용 Claude 따라하기 교실 — 가입·설치부터 재고 현황판, GitHub 주소 공유까지 20단계">
 <style>
 :root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 body{margin:0;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
@@ -182,7 +182,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .send{width:34px;height:34px;border-radius:9px;border:none;background:#D97A4A;color:#fff;display:grid;place-items:center;flex:none}
 .crow{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;align-items:center;position:relative}
 .chip{border:1px solid var(--app-line);background:var(--app-side);border-radius:8px;padding:3px 10px;font-size:12.5px;color:var(--app-ink);display:inline-flex;align-items:center;gap:5px}
-.chip.mode{margin-left:auto}
+.chip.push{margin-left:auto}
+.menu.r{left:auto;right:0}
+.menu .eff{display:flex;gap:4px;padding:0 4px 4px}
+.menu .eff button{flex:1;text-align:center;border:1px solid var(--app-line)}
+.menu button.on{background:var(--app-bub);font-weight:700}
 .app:not(.is-code) .code-only{display:none}
 .chat-only{font-size:12.5px;color:var(--app-muted)}
 .app.is-code .chat-only{display:none}
@@ -266,6 +270,13 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .g-plan.on{border-color:#2E7D4F}
 .g-plan span{color:#555;font-size:13px}
 .g-lab{font-weight:700;font-size:13px}
+.g-tog{display:flex;align-items:center;gap:10px;width:100%;border:1px solid #DDD;border-radius:8px;background:#fff;color:#1B1B1B;padding:8px 10px;text-align:left;font-size:13.5px}
+.g-tog span{flex:1}
+.g-tog i{width:34px;height:20px;border-radius:10px;background:#BBB;position:relative;flex:none}
+.g-tog i::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .2s}
+.g-tog.on i{background:#2E7D4F}.g-tog.on i::after{left:16px}
+.g-tog b{font-size:12px;color:#555;min-width:28px}
+.g-area{display:block;width:100%;min-height:70px;border:1px solid #BBB;border-radius:6px;background:#fff;color:#444;padding:8px 10px;text-align:left;font-size:12.5px;line-height:1.55}
 .g-radio{display:flex;flex-direction:column;gap:6px}
 .g-radio button{display:flex;align-items:center;gap:8px;border:1px solid #DDD;border-radius:6px;background:#fff;color:#1B1B1B;padding:7px 10px;text-align:left;font-weight:600}
 .g-radio i{width:14px;height:14px;border-radius:50%;border:2px solid #888;flex:none}
@@ -328,11 +339,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
   <header class="top">
     <div class="brand">
       <h1>Claude 따라하기 교실</h1>
-      <p id="orgLine">(주)팬직 직원용 · 입문편 10단계 + 업무편 4단계 + 공유편 4단계 · 혼자 보고 따라 하는 원격 교육</p>
+      <p id="orgLine">(주)팬직 직원용 · 입문편 12단계 + 업무편 4단계 + 공유편 4단계 · 혼자 보고 따라 하는 원격 교육</p>
     </div>
     <div class="prog" aria-label="진도">
       <div class="bar"><i id="progFill"></i></div>
-      <span id="progText">0 / 18 단계 완료</span>
+      <span id="progText">0 / 20 단계 완료</span>
     </div>
     <div class="getcard" id="getCard" hidden><span>인쇄용 요약카드</span><a class="btn" href="files/claude-card.pdf" download="Claude_요약카드_팬직.pdf">PDF 받기</a><a class="btn" href="files/claude-card.docx" download="Claude_요약카드_팬직.docx">Word 받기</a></div>
   </header>
@@ -365,7 +376,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
                   <button class="chip code-only" data-k="folder" id="folderChip"></button>
                   <button class="chip code-only" data-k="local">Local ▾</button>
                   <div class="menu" id="localMenu" hidden><div class="mh">작업할 폴더</div><button data-k="selectFolder">Select folder…</button></div>
-                  <button class="chip mode code-only" data-k="mode">Manual · 바꾸기 전에 물어봄</button>
+                  <button class="chip push code-only" data-k="model" id="modelChip">Sonnet 5.5 · 보통</button>
+                  <button class="chip code-only" data-k="mode" id="modeChip">Manual · 물어봄</button>
+                  <div class="menu r" id="modelMenu" hidden><div class="mh">모델</div><button data-k="model_opus">Opus 5.5 — 가장 꼼꼼</button><button data-k="model_sonnet">Sonnet 5.5 — 기본</button><button data-k="model_haiku">Haiku 5.5 — 가장 빠름</button><div class="mh">노력</div><div class="eff"><button data-k="eff_low">낮음</button><button data-k="eff_mid">보통</button><button data-k="eff_high">높음</button></div></div>
+                  <div class="menu r" id="modeMenu" hidden><div class="mh">승인 모드</div><button data-k="mode_ask">Manual — 바꾸기 전에 물어봄</button><button data-k="mode_edit">편집 자동 수락</button><button data-k="mode_plan">계획 — 계획만 세움</button><button data-k="mode_auto">자동 — 알아서 진행</button></div>
                 </div>
               </div>
             </div>
@@ -516,6 +530,33 @@ gh:`https://github.com`,
 prep:`결과물\\재고_현황판.html 을 복사해서 공유\\index.html 로 저장해 줘. 원본은 그대로 둬.
 그리고 이 파일 안에 사람 이름·실제 수량·거래처 같은 회사 자료가 직접 들어 있는지 확인해서 알려 줘.`,
 ghurl:`https://[내아이디].github.io/[저장소이름]/`,
+plan:`재고 현황판에 월별 그래프를 넣고 싶어. 파일은 고치지 말고 어떻게 할지 계획만 3줄로 보여 줘.`,
+shot:`이 화면처럼 막혔어. 원인과 해결 방법을 순서대로 알려 줘.`,
+pref:`- 모든 답은 한국어로, 쉬운 말로 써 줘. 전문 용어는 처음 나올 때 한 줄로 풀어 줘.
+- 결론을 먼저 말하고, 이유는 짧게.
+- 단계가 있는 일은 번호를 붙여 하나씩 알려 줘.
+- 모르거나 확실하지 않은 것은 그렇다고 말해 줘. 숫자·기준을 지어내지 마.
+- 나는 ${SETTINGS.company}에서 [부서·맡은 일]을 하고 있어. 컴퓨터 전문가는 아니야.`,
+myclaude:`아래 내용을 내 사용자 폴더의 .claude\\CLAUDE.md 파일로 저장해 줘. 이미 파일이 있으면 덮어쓰지 말고 먼저 내용을 보여 줘.
+
+# 내 기본 지침
+
+## 언어
+- 모든 응답은 한국어로 한다. 확인 질문·선택지·진행 안내까지 한국어로.
+- 코드·파일명·명령어는 원문 그대로 두고 설명은 한국어로.
+
+## 일하는 방식
+- 작업 전에 계획을 3줄로 먼저 보여 주고, 내가 좋다고 하면 진행한다.
+- 한 번에 하나씩. 끝나면 무엇을 만들었고 어디에 저장했는지 알려 준다.
+- 결과 파일은 지금 연 폴더 안에 저장한다.
+
+## 하면 안 되는 것
+- 파일을 지우거나 이름을 바꾸지 않는다. 기존 파일을 고칠 때는 먼저 묻는다.
+- 회사 자료를 인터넷으로 보내거나 공개하지 않는다.
+- 내가 정하지 않은 기준값·숫자를 지어내지 않는다. 없으면 묻는다.
+
+## 화면
+- 화면 글자는 한글로, 크게. 버튼도 크게.`,
 save:`결과를 결과물 폴더에 [파일이름] 으로 저장해 줘.`
 };
 
@@ -525,9 +566,9 @@ const STUCK=[
 ['엉뚱한 것을 만든다','CLAUDE.md가 AI실습 폴더 맨 위에 있는가(결과물 폴더 안이 아님)? 이름이 CLAUDE.md인가(.txt가 아님)?','','이 폴더의 CLAUDE.md 를 먼저 읽고 다시 해 줘'],
 ['너무 많이 만든다','한 번에 여러 개를 시켰는가?','','[하나]만 먼저 해 줘. 나머지는 나중에'],
 ['결과가 화면에만 있다','저장하라는 말이 지시문에 있었는가?','','결과를 결과물 폴더에 [파일이름] 으로 저장해 줘.'],
-['화면이 깨진다 · 버튼이 안 눌린다','브라우저에서 F5를 눌렀는가? 파일을 다시 열었는가?','오류 문구를 그대로 복사해 붙인다.','이 오류가 났어. 원인을 한 줄로 알려 주고 고쳐 줘. 다른 건 건드리지 마.'],
+['화면이 깨진다 · 버튼이 안 눌린다','브라우저에서 F5를 눌렀는가? 파일을 다시 열었는가?','오류 화면을 캡처(Windows+Shift+S)해 입력창에 붙인다(Ctrl+V).','이 오류가 났어. 원인을 한 줄로 알려 주고 고쳐 줘. 다른 건 건드리지 마.'],
 ['한글이 깨진다','엑셀에서 CSV를 저장할 때 \'CSV UTF-8\'로 저장했는가?','','CSV를 UTF-8과 EUC-KR 둘 다 읽을 수 있게 해 줘'],
-['Local을 골라도 안 열린다 (Windows)','Git을 설치했는가? 설치한 뒤 Claude 앱을 완전히 닫았다가 다시 켰는가?','2단계대로 Git을 기본값으로 설치하고 앱을 다시 연다.','']
+['Local을 골라도 안 열린다 (Windows)','Git을 설치했는가? 설치한 뒤 Claude 앱을 완전히 닫았다가 다시 켰는가?','{{git}}단계대로 Git을 기본값으로 설치하고 앱을 다시 연다.','']
 ];
 const COPY=Object.assign({},PR);
 STUCK.forEach((s,i)=>{ if(s[3]) COPY['stuck'+i]=s[3]; });
@@ -536,7 +577,7 @@ COPY.csvio=CSV_IO; COPY.csvsafe=CSV_SAFE;
 const simCard=PR.card.replace('[이름]',SETTINGS.name).replace('[예: 궁금하다]',SETTINGS.mood);
 const O='결과물/';
 
-/* ── 18단계 (입문편 · 업무편 · 공유편) ── */
+/* ── 20단계 (입문편 · 업무편 · 공유편). 본문의 단계 번호는 {{key}} 로 쓴다 ── */
 const STEPS=[
 {part:'입문편',min:10,short:'계정',key:'account',title:'계정 만들기 — 각자 가입하고 요금제 확인',
  goal:'Claude를 쓰려면 내 계정이 있어야 합니다. 직원 각자 자기 이메일로 가입합니다.',
@@ -565,7 +606,7 @@ const STEPS=[
   '시작 메뉴에서 <b>Claude</b> 를 실행하고, 0단계 계정으로 로그인합니다.',
   '위 가운데 <b>Code</b> 탭을 눌러 봅니다. 요금제 안내가 뜨면 유료 요금제가 필요하다는 뜻입니다.'],
  prompts:[['앱 내려받기 주소','addr']],
- tip:'<b>설치 파일이 차단되면</b> 회사 보안 설정 때문일 수 있습니다. 혼자 해결하려 하지 말고 전산 담당자에게 설치 허용을 요청하세요.',
+ tip:'<b>설치 파일이 차단되면</b> 차단 화면을 캡처해 claude.ai 채팅에 붙여 원인을 물어보세요. "관리자 권한 필요"나 "회사 정책으로 차단"이라고 나오면 Claude도 풀 수 없으니, 이 PC의 설치 권한을 가진 사람에게 허용을 요청합니다.',
  checks:['Claude 앱이 설치되어 열린다','내 계정으로 로그인했다','Code 탭이 요금제 안내 없이 열린다'],
  scene:[['cap','설치 파일을 실행하면 설치가 시작됩니다. 기본값 그대로 다음.'],['setup','install'],['wait',2300],
   ['cap','설치가 끝나면 <b>0단계에서 만든 계정</b>으로 로그인합니다.'],['setup','login'],['tap','login','로그인'],
@@ -579,7 +620,7 @@ const STEPS=[
   '바탕화면 빈 곳에서 마우스 오른쪽 → <b>새로 만들기 → 폴더</b> → 이름을 <code>AI실습</code> 으로 바꿉니다.'],
  prompts:[['Git 내려받기 주소','git']],
  extra:()=>`<h3>설치가 안 될 때</h3><div class="tbl"><table><tr><th>증상</th><th>해결</th></tr>
-  <tr><td>설치 파일 실행이 차단됨</td><td>회사 보안 설정입니다. 전산 담당자에게 설치 허용을 요청합니다.</td></tr>
+  <tr><td>설치 파일 실행이 차단됨</td><td>차단 화면을 캡처해 claude.ai 채팅에 붙여 원인을 묻습니다. "관리자 권한 필요"·"회사 정책으로 차단"이면 Claude도 풀 수 없으니, 이 PC의 설치 권한을 가진 사람에게 허용을 요청합니다.</td></tr>
   <tr><td>Code 탭에서 "요금제 필요" 안내</td><td>유료 요금제(Pro 이상)가 필요합니다.</td></tr>
   <tr><td>Local을 골라도 세션이 안 열림</td><td>Git이 없거나 앱을 다시 켜지 않았습니다. Git 설치 후 앱을 완전히 닫았다가 다시 엽니다.</td></tr>
   <tr><td>확인 창(Accept / Reject)이 계속 뜸</td><td>정상입니다. Manual 모드는 바꾸기 전에 물어봅니다. 읽기·저장은 Accept.</td></tr>
@@ -622,6 +663,27 @@ const STEPS=[
   ['cap','<b>폴더 선택</b> 을 누릅니다.'],['tap','pickOk','폴더 선택'],
   ['cap','입력창 아래에 <b>AI실습</b> 이 보이면 성공!'],['spot','folder','AI실습이 보이면 성공',2600],['end']]},
 
+{part:'입문편',min:15,short:'처음 설정',key:'setup',init:{code:true},title:'처음 설정 — 지침과 개인정보',
+ goal:'한 번만 해 두면 이후 모든 대화에 적용되는 설정입니다. Claude가 늘 한국어로, 쉬운 말로, 먼저 물어보고 일하게 만듭니다.',
+ todo:['<b>내 대화 학습 사용 끄기(추천)</b> — claude.ai 왼쪽 아래 내 이름 → <b>설정 → 개인정보</b> → "Claude 개선에 도움" 을 끕니다. 회사 업무 대화가 모델 학습에 쓰이지 않게 합니다.',
+  '<b>채팅용 개인 선호사항</b> — <b>설정 → 일반</b> 의 개인 선호사항 칸에 추천 문안 ①을 붙여 넣고 [부서·맡은 일]을 채운 뒤 저장합니다. Chat 탭에 적용됩니다.',
+  '<b>Claude Code 개인 지침</b> — Code 탭(AI실습 폴더)에서 지시문 ②를 보냅니다. 폴더 밖에 저장하므로 확인 창이 뜨면 <b>Accept</b>. 내가 여는 모든 폴더에 적용됩니다.',
+  '<b>승인 모드 확인</b> — 보내기 버튼 옆이 <b>Manual(바꾸기 전에 물어봄)</b> 인지 봅니다.'],
+ prompts:[['추천 문안 ① 채팅용 개인 선호사항','pref'],['지시문 ② Claude Code 개인 지침 만들기','myclaude']],
+ extra:()=>`<h3>지침은 두 층입니다</h3><div class="tbl"><table><tr><th>무엇</th><th>어디에</th><th>적용 범위</th></tr>
+  <tr><td>개인 지침 (이 단계)</td><td><code>C:\\Users\\내이름\\.claude\\CLAUDE.md</code></td><td>내 PC에서 여는 <b>모든 폴더</b> — 언어·말투·일하는 방식</td></tr>
+  <tr><td>업무 지침 ({{claudemd}}단계)</td><td><code>AI실습\\CLAUDE.md</code></td><td><b>그 폴더만</b> — 회사·용어·기준값 같은 업무 규칙</td></tr></table></div>
+  <p class="note">둘 다 읽힙니다. 메뉴 이름은 버전에 따라 조금 다를 수 있습니다.</p>`,
+ tip:'<b>추천 문안은 출발점입니다.</b> 쓰다가 마음에 안 드는 점이 생기면 "개인 지침에 ○○을 한 줄 추가해 줘"라고 말해 고쳐 나가세요.',
+ checks:['내 대화 학습 사용을 껐다','채팅용 개인 선호사항을 저장했다','개인 지침 CLAUDE.md를 저장했고 승인 모드가 Manual이다'],
+ scene:[['web','https://claude.ai/settings','settings'],['cap','claude.ai → 내 이름 → <b>설정</b>. 먼저 개인정보의 <b>학습 사용</b>을 끕니다.'],['tap','privToggle','학습 사용 끄기'],
+  ['cap','이제 <b>개인 선호사항</b> 칸에 추천 문안 ①을 붙여 넣고 저장합니다.'],['tap','prefBox','선호사항 칸'],['tap','prefSave','저장'],['close','br'],
+  ['cap','Claude 앱 <b>Code</b> 탭에서 지시문 ②를 보냅니다.'],['tap','input','입력창'],['type',PR.myclaude],['tap','send','보내기'],['think'],
+  ['say','내 사용자 폴더의 <code>.claude\\CLAUDE.md</code> 에 개인 지침을 저장하겠습니다. 아직 파일이 없습니다.'],
+  ['cap','폴더 밖에 저장하므로 확인 창이 뜹니다. <b>Accept</b>.'],['perm','create','C:/Users/나/.claude/CLAUDE.md'],
+  ['say','저장했습니다. 앞으로 <b>어느 폴더에서 일하든</b> 이 지침을 먼저 읽고 따르겠습니다.'],
+  ['cap','마지막으로 승인 모드가 <b>Manual</b> 인지 확인합니다.'],['spot','mode','Manual 확인',2400],['end']]},
+
 {part:'입문편',min:10,short:'첫 지시',key:'first',adds:[[O+'인사카드.html','card1']],title:'첫 지시 — 인사 카드 만들기',
  goal:'지시문 하나로 화면(HTML 파일) 하나를 만들어 봅니다.',
  todo:['아래 회색 상자의 <b>[복사]</b>를 누릅니다.','Claude 입력창을 누르고 <span class="kbd">Ctrl</span>+<span class="kbd">V</span> 로 붙여 넣습니다.','노란 칸 <b>[이름]</b>, <b>[예: 궁금하다]</b> 를 내 것으로 바꿉니다.','Enter 를 누릅니다.','확인 창이 뜨면 <b>Accept</b> 를 누릅니다.'],
@@ -650,7 +712,7 @@ const STEPS=[
   ['cap','③ <b>인사카드.html</b> 을 더블클릭합니다(여기서는 한 번).'],['tap','item_인사카드.html','③ 더블클릭'],
   ['cap','내 이름이 크게 보이면 <b>완료</b>입니다.'],['wait',1500],['end']]},
 
-{part:'입문편',min:10,short:'고치기',adds:[[O+'인사카드.html','card2']],title:'고쳐 달라고 말하기',
+{part:'입문편',min:10,short:'고치기',key:'fix',adds:[[O+'인사카드.html','card2']],title:'고쳐 달라고 말하기',
  goal:'같은 대화에서 한 줄로 고칩니다. 처음부터 다시 만들 필요가 없습니다.',
  todo:['인사 카드를 만든 <b>같은 대화</b>에 아래 지시문을 붙여 넣습니다.','확인 창에서 <b>Accept</b>.','열어 둔 인터넷 창에서 <span class="kbd">F5</span>(새로고침)를 눌러 바뀐 모습을 봅니다.'],
  prompts:[['지시문 ② 고치기','fix']],
@@ -685,17 +747,54 @@ const STEPS=[
   ['browse',O+'할일.html'],['cap','할 일 하나를 체크해 보세요.'],['tap','todo1','체크'],
   ['cap','이제 <b>F5(새로고침)</b>. 체크가 남아 있을까요?'],['tap','reload','F5'],['cap','그대로 남아 있습니다. 이게 <b>저장</b>입니다.'],['wait',1500],['end']]},
 
-{part:'입문편',min:5,short:'막힐 때',title:'막히면 이렇게 — 여덟 가지',
+{part:'입문편',min:5,short:'막힐 때',key:'stuck',title:'막히면 이렇게 — 여덟 가지',
  goal:'막힘은 능력 문제가 아닙니다. 입력·권한·범위·위치의 문제입니다. 위에서부터 하나씩 확인합니다.',
- todo:['증상을 눌러 <b>먼저 확인할 것</b>을 봅니다.','그래도 안 되면 <b>한 마디 지시문</b>을 복사해 보냅니다.','셋까지 해도 안 되면 담당자에게 화면을 그대로 보여 줍니다. 화면은 지우지 않습니다 — 오류 문장이 고칠 재료입니다.'],
- prompts:[],
+ todo:['증상을 눌러 <b>먼저 확인할 것</b>을 봅니다.','그래도 안 되면 <b>한 마디 지시문</b>을 복사해 보냅니다.','셋까지 해도 안 되면 <b>화면을 캡처</b>(<span class="kbd">Windows</span>+<span class="kbd">Shift</span>+<span class="kbd">S</span>)해 Claude 입력창에 <span class="kbd">Ctrl</span>+<span class="kbd">V</span> 로 붙이고, 아래 한 줄과 함께 보내 원인과 해결 방법을 묻습니다. 화면은 지우지 않습니다 — 오류 문장이 고칠 재료입니다.'],
+ prompts:[['캡처와 함께 보낼 말','shot']],
  extra:()=>`<div class="stuck">${STUCK.map((s,i)=>`<details${i===0?' open':''}><summary><span>${i+1}</span>${esc(s[0])}</summary><div class="sb"><p><b>먼저 확인</b> ${esc(s[1])}</p>${s[2]?`<p><b>이렇게</b> ${esc(s[2])}</p>`:''}${s[3]?`<div class="pbox"><div class="pbox-h"><b>한 마디</b><button class="copy" data-copy="stuck${i}">복사</button></div><pre>${mark(s[3])}</pre></div>`:''}</div></details>`).join('')}</div>`,
- tip:'<b>가장 흔한 막힘은 1번입니다.</b> 확인 창이 화면 아래에 떠서 답을 기다리는데, 못 보고 "왜 안 되지?" 하는 경우입니다.',
- checks:['막히면 확인 창부터 본다는 것을 안다','"결과물 폴더에 저장해 줘" 한 줄을 안다','셋까지 해도 안 되면 담당자에게 보여 준다'],
+ tip:'<b>가장 흔한 막힘은 1번입니다.</b> 확인 창이 화면 아래에 떠서 답을 기다리는데, 못 보고 "왜 안 되지?" 하는 경우입니다. <b>Claude 앱이 안 열리거나 로그인이 안 되면</b> 인터넷 창의 claude.ai 채팅에 캡처를 붙여 물어봅니다.',
+ checks:['막히면 확인 창부터 본다는 것을 안다','"결과물 폴더에 저장해 줘" 한 줄을 안다','셋까지 해도 안 되면 화면을 캡처해 Claude에게 묻는다'],
  scene:[['tap','input','입력창'],['type','할 일 화면의 글자를 더 크게 해 줘. 같은 파일에 저장해 줘.'],['tap','send','보내기'],['think'],
   ['say','글자 크기를 키우겠습니다.'],['showperm','edit',O+'할일.html'],
   ['cap','"아무 일도 안 일어나요!" — 대부분 <b>확인 창이 답을 기다리는 중</b>입니다.'],['wait',2600],
   ['perm','edit',O+'할일.html'],['say','고쳤습니다.'],['cap','확인 창에 답하니 바로 진행됩니다. 막히면 <b>확인 창부터</b>.'],['wait',1200],['end']]},
+
+{part:'입문편',min:10,short:'모드·모델',key:'choose',title:'모드 · 모델 · 노력 고르기',
+ goal:'입력창 아래 버튼 두 개로 Claude가 일하는 방식을 고릅니다. 일에 맞게 고르면 더 빠르고, 사용량도 아낍니다.',
+ todo:['<b>승인 모드</b> — 입력창 아래 모드 버튼. 평소엔 <b>Manual(물어봄)</b>, 큰 일을 시작할 땐 <b>계획</b>으로 계획부터 받습니다.',
+  '<b>모델</b> — 입력창 아래 모델 이름. 평소엔 <b>Sonnet</b>, 몇 번 시켜도 안 풀리면 <b>Opus</b>, 글자 하나 고치는 정도면 <b>Haiku</b>.',
+  '<b>노력</b> — 모델 메뉴 안의 "노력". 평소엔 <b>보통</b>, 어려운 일이면 <b>높음</b>.',
+  '일이 끝나면 다시 <b>Sonnet · 보통 · Manual</b> 로 돌려 둡니다.'],
+ prompts:[['계획 모드에서 보내 볼 말','plan']],
+ extra:()=>`<h3>① 승인 모드 — 얼마나 물어보고 일할지</h3><div class="tbl"><table><tr><th>모드</th><th>하는 일</th><th>이럴 때</th></tr>
+  <tr><td><b>Manual (물어봄)</b></td><td>파일을 만들거나 고치기 전에 매번 묻는다</td><td>처음 배울 때, 회사 원본 파일이 있는 폴더 — <b>기본값</b></td></tr>
+  <tr><td>편집 자동 수락</td><td>파일 수정은 묻지 않고, 명령 실행은 묻는다</td><td>같은 화면을 여러 번 고칠 때</td></tr>
+  <tr><td><b>계획</b></td><td>파일을 건드리지 않고 살펴본 뒤 계획만 보여 준다</td><td>큰 일을 시작하기 전 — 계획을 읽고 좋으면 Manual로 돌려 진행</td></tr>
+  <tr><td>자동</td><td>안전해 보이는 일은 묻지 않고 진행, 위험해 보이는 일만 멈춘다</td><td>익숙해진 뒤, 복사본만 있는 실습 폴더에서만</td></tr></table></div>
+  <h3>② 모델 — 누구에게 시킬지</h3><div class="tbl"><table><tr><th>모델</th><th>특징</th><th>이럴 때</th></tr>
+  <tr><td><b>Sonnet</b></td><td>빠르고 대부분의 일에 충분</td><td><b>기본값</b> — 이 교육의 실습, 일상 업무 화면</td></tr>
+  <tr><td><b>Opus</b></td><td>가장 꼼꼼하지만 느리고 사용량을 많이 씀</td><td>몇 번 시켜도 안 풀릴 때, 큰 화면을 처음 설계할 때</td></tr>
+  <tr><td>Haiku</td><td>가장 빠르고 가벼움</td><td>글자·색 고치기, 짧은 질문</td></tr>
+  <tr><td>그 밖의 모델</td><td>메뉴에 "○월 ○일까지 포함"처럼 기간이 적힌 모델은 그 기간에만 포함</td><td>시험해 보고 싶을 때만</td></tr></table></div>
+  <h3>③ 노력 — 얼마나 깊이 생각할지</h3><div class="tbl"><table><tr><th>노력</th><th>이럴 때</th></tr>
+  <tr><td>낮음</td><td>간단한 수정, 빨리 답이 필요할 때</td></tr>
+  <tr><td><b>보통</b></td><td><b>기본값</b> — 대부분의 일</td></tr>
+  <tr><td>높음</td><td>복잡한 화면·계산, 같은 오류가 반복될 때. 오래 생각하고 사용량을 더 씀</td></tr></table></div>
+  <h3>상황별로 이렇게 고릅니다</h3><div class="tbl"><table><tr><th>상황</th><th>모드</th><th>모델 · 노력</th></tr>
+  <tr><td>처음 실습, 평소 업무</td><td>Manual</td><td>Sonnet · 보통</td></tr>
+  <tr><td>큰 일을 새로 시작</td><td>계획 → 계획 확인 후 Manual</td><td>Sonnet · 보통 (설계가 크면 Opus)</td></tr>
+  <tr><td>몇 번 시켜도 안 풀림</td><td>Manual</td><td>Opus · 높음</td></tr>
+  <tr><td>글자·색 하나 고치기</td><td>Manual</td><td>Haiku · 낮음</td></tr></table></div>
+  <p class="note"><b>고속 모드</b>는 답이 빨라지지만 별도 크레딧이 필요합니다. 평소에는 끄고 씁니다.</p>`,
+ tip:'<b>사용량 한도</b>에 걸리면 잠시 기다리거나 Sonnet·Haiku로 바꿉니다. 메뉴 이름과 모델 목록은 계정과 버전에 따라 조금 다를 수 있습니다.',
+ checks:['모드 버튼에서 계획과 Manual을 바꿔 봤다','모델을 바꿔 보고 다시 Sonnet으로 돌렸다','노력을 높음과 보통으로 바꿔 봤다'],
+ scene:[['cap','먼저 <b>승인 모드</b>를 바꿔 봅니다. 모드 버튼을 누르세요.'],['tap','mode','모드 버튼'],['tap','mode_plan','계획'],
+  ['cap','계획 모드에서는 파일을 건드리지 않고 <b>계획만</b> 받습니다.'],['tap','input','입력창'],['type',PR.plan],['tap','send','보내기'],['think'],
+  ['say','<p>계획입니다. 아직 아무 파일도 고치지 않았습니다.</p><ol><li>입출고_기록.csv 의 일자로 월별 입고·출고 합계 계산</li><li>현황판 아래에 막대그래프 하나 추가(외부 라이브러리 없이)</li><li><code>결과물\\재고_현황판.html</code> 같은 파일에 저장</li></ol><p>이 계획대로 진행할까요?</p>'],
+  ['cap','계획이 좋으면 모드를 <b>Manual</b>로 돌린 뒤 "좋아, 진행해"라고 보냅니다.'],['tap','mode','모드 버튼'],['tap','mode_ask','Manual'],
+  ['cap','이번엔 <b>모델</b>. 어려운 일이면 Opus로 바꿉니다.'],['tap','model','모델 버튼'],['tap','model_opus','Opus'],
+  ['cap','같은 메뉴에서 <b>노력</b>을 높음으로.'],['tap','model','모델 버튼'],['tap','eff_high','노력: 높음'],
+  ['spot','model','바뀐 모델 · 노력',2200],['cap','일이 끝나면 다시 <b>Sonnet · 보통</b>으로 돌려 둡니다.'],['wait',1200],['end']]},
 
 {part:'업무편',min:15,short:'CSV 읽기',adds:[['입출고_기록.csv','csvio'],['안전재고_기준.csv','csvsafe']],title:'재료 받기와 CSV 읽히기',
  goal:'엑셀에서 쓰던 입출고 기록(CSV)을 Claude에게 읽혀서 자재별 합계를 받아 봅니다.',
@@ -725,8 +824,8 @@ const STEPS=[
    <p>형식이 이상한 줄:</p><ul><li>날짜 형식이 다름: 7·8줄(2026.4.2), 9줄(4/3), 13줄(20260405)</li><li>수량에 글자가 붙음: 10줄(120EA), 16줄(200 EA) — 숫자만 셌습니다</li><li>수량 빈 칸: 17줄(도료 회색) — 합계에서 뺐습니다</li><li>열이 하나 많음: 21줄 — 합계에서 뺐습니다</li></ul><p>파일은 고치지 않았습니다.</p>`],
   ['cap','합계 표와 함께 <b>이상한 줄</b>까지 짚어 줍니다. 철판 35는 손으로도 맞춰 보세요.'],['wait',1500],['end']]},
 
-{part:'업무편',min:15,short:'CLAUDE.md',adds:[['CLAUDE.md','md']],title:'CLAUDE.md — 업무 인수인계서 쓰기',
- goal:'신입에게 업무를 넘기듯, 우리 회사 규칙을 파일 하나에 적어 둡니다. Claude는 이 폴더에서 일할 때마다 이 파일을 먼저 읽습니다.',
+{part:'업무편',min:15,short:'CLAUDE.md',key:'claudemd',adds:[['CLAUDE.md','md']],title:'CLAUDE.md — 업무 인수인계서 쓰기',
+ goal:'신입에게 업무를 넘기듯, 우리 회사 규칙을 파일 하나에 적어 둡니다. Claude는 이 폴더에서 일할 때마다 이 파일을 먼저 읽습니다. ({{setup}}단계의 개인 지침은 모든 폴더에, 이 파일은 이 폴더에만 적용됩니다.)',
  todo:['아래 회색 상자를 복사해 <b>메모장</b>에 붙이고 노란 <b>[ ]</b> 칸을 우리 회사 것으로 채웁니다.','채운 내용을 통째로 복사해 Claude에 붙여 넣고 보냅니다.','확인 창에서 <b>Accept</b>.','탐색기에서 AI실습 <b>맨 위</b>에 <code>CLAUDE.md</code> 가 생겼는지 봅니다(결과물 폴더 안이 아님).'],
  prompts:[['지시문 ⑥ CLAUDE.md 만들기','claudemd']],
  extra:()=>`<h3>왜 다섯 묶음인가</h3><div class="tbl"><table><tr><th>묶음</th><th>없으면 생기는 일</th></tr>
@@ -744,11 +843,11 @@ const STEPS=[
   ['say','<p>CLAUDE.md 에 "안전재고 기준을 지어내지 않는다"고 되어 있습니다.</p><p><code>안전재고_기준.csv</code> 에 SC-01 이 없으니 <b>기준 없음</b>으로 두겠습니다. 기준값을 정해 주시면 반영하겠습니다.</p>'],
   ['cap','AI가 기준을 <b>멋대로 정하지 않고</b> 물어봅니다. 이게 인수인계서의 힘입니다.'],['wait',1500],['end']]},
 
-{part:'업무편',min:20,short:'입력 화면',adds:[[O+'입출고_입력.html','form']],title:'입출고 입력 화면 만들기',
+{part:'업무편',min:20,short:'입력 화면',key:'form',adds:[[O+'입출고_입력.html','form']],title:'입출고 입력 화면 만들기',
  goal:'창고 담당자가 입고·출고를 입력하는 화면을 만듭니다.',
  todo:['지시문 ⑦을 붙여 넣고 보냅니다.','Claude가 <b>계획 3줄</b>을 먼저 보여 줍니다(CLAUDE.md 규칙). 읽어 보고 괜찮으면 <b>"좋아, 진행해"</b>.','확인 창에서 <b>Accept</b>.','파일을 열어 한 건 등록 → <span class="kbd">F5</span> → 목록이 남아 있으면 성공.'],
  prompts:[['지시문 ⑦ 입출고 입력 화면','form'],['계획에 답하기','ok']],
- tip:'<b>마음에 안 드는 곳은 7단계처럼 한 줄로</b> — 예: "등록 버튼을 더 크게, 출고 버튼은 빨간색으로 바꿔 줘. 같은 파일에 저장해 줘."',
+ tip:'<b>마음에 안 드는 곳은 {{fix}}단계처럼 한 줄로</b> — 예: "등록 버튼을 더 크게, 출고 버튼은 빨간색으로 바꿔 줘. 같은 파일에 저장해 줘."',
  checks:['계획 3줄을 읽고 "좋아, 진행해"라고 답했다','한 건 등록하면 목록에 한 줄 생긴다','F5를 눌러도 목록이 남아 있다'],
  scene:[['tap','input','입력창'],['type',PR.form],['tap','send','보내기'],['think'],
   ['say','<p>계획 3줄입니다.</p><ol><li>입력 칸 5개(일자·구분·자재코드·수량·담당자)와 큰 [등록] 버튼</li><li>등록하면 아래 목록에 한 줄씩, 브라우저 안(localStorage)에 저장</li><li><code>결과물\\입출고_입력.html</code> 로 저장</li></ol><p>이대로 진행할까요?</p>'],
@@ -757,7 +856,7 @@ const STEPS=[
   ['browse',O+'입출고_입력.html'],['cap','값이 미리 들어 있습니다. <b>[등록]</b> 을 누르세요.'],['tap','formSubmit','등록'],
   ['cap','목록에 한 줄 생겼습니다. <b>F5</b> 를 눌러도 남아 있는지 봅니다.'],['tap','reload','F5'],['cap','남아 있으면 성공!'],['wait',1200],['end']]},
 
-{part:'업무편',min:25,short:'현황판',adds:[[O+'재고_현황판.html','dash']],title:'재고 현황판 만들기',
+{part:'업무편',min:25,short:'현황판',key:'dash',adds:[[O+'재고_현황판.html','dash']],title:'재고 현황판 만들기',
  goal:'CSV를 불러와 자재별 현재고를 보고, 안전재고보다 적은 자재를 빨간색으로 바로 찾습니다.',
  todo:['지시문 ⑧을 붙여 넣고 보냅니다.','계획 3줄을 읽고 <b>"좋아, 진행해"</b> → <b>Accept</b>.','현황판을 열고 <b>[CSV 불러오기]</b>로 두 파일을 고릅니다.','빨간 카드가 무엇인지, 숫자 하나를 손으로 맞춰 봅니다.'],
  prompts:[['지시문 ⑧ 재고 현황판','dash']],
@@ -850,15 +949,15 @@ const STEPS=[
   <li><span>원본 파일은 그대로 두고 복사본으로 작업합니다.</span></li>
   <li><span>결과 숫자는 한 번은 손으로 맞춰 봅니다.</span></li>
   <li><span>확인 창에서 지우기 요청이 보이면 Reject 하고 담당자에게 묻습니다.</span></li></ol>`,
- tip:'<b>다음 걸음</b> — 질문 1의 업무 하나를 골라, 11단계처럼 CLAUDE.md를 먼저 쓰고, 12·13단계처럼 입력 화면 → 현황판 순서로 만들고, 15·16단계처럼 주소로 열어 보세요.',
- checks:['오늘 만든 파일을 모두 열어 봤다','질문 3개에 답을 적었다','막히면 9단계 막힘 카드를 본다'],
+ tip:'<b>다음 걸음</b> — 질문 1의 업무 하나를 골라, {{claudemd}}단계처럼 CLAUDE.md를 먼저 쓰고, {{form}}·{{dash}}단계처럼 입력 화면 → 현황판 순서로 만들고, {{prep}}·{{publish}}단계처럼 주소로 열어 보세요.',
+ checks:['오늘 만든 파일을 모두 열어 봤다','질문 3개에 답을 적었다','막히면 {{stuck}}단계 막힘 카드를 본다'],
  scene:[['explorer','바탕화면/AI실습'],['cap','AI실습 폴더입니다. 맨 위에 <b>CLAUDE.md</b>, 재료 CSV 두 개, 결과물 폴더와 공유 폴더.'],['wait',2600],
   ['tap','item_결과물','결과물 폴더'],['cap','오늘 만든 화면들입니다. 하나씩 열어 보세요.'],['wait',1500],
   ['tap','item_재고_현황판.html','현황판 열기'],['wait',400],['tap','dashLoad','CSV 불러오기'],['cap','수고하셨습니다. 이제 <b>내 업무</b>로 바꿔 만들어 보세요.'],['end']]}
 ];
 
 /* ── 상태(이 브라우저에만 저장) ── */
-const KEY='claude-ttara-v2';
+const KEY='claude-ttara-v3';
 let ST={cur:0,checks:{},notes:{}};
 try{const raw=localStorage.getItem(KEY); if(raw){const o=JSON.parse(raw); if(o&&typeof o==='object') ST=Object.assign(ST,o);}}catch(e){}
 function saveST(){try{localStorage.setItem(KEY,JSON.stringify(ST));}catch(e){}}
@@ -878,6 +977,8 @@ function renderLine(){
   const on=$('.st.on'); if(on){const ln=$('.line'); const l=ln.scrollLeft+(on.getBoundingClientRect().left-ln.getBoundingClientRect().left)-ln.clientWidth/2+on.clientWidth/2; ln.scrollLeft=Math.max(0,l);}
 }
 function mark(t){return esc(t).replace(/\[[^\]\n]*\]/g,m=>`<mark>${m}</mark>`);}
+// 본문 속 {{key}} 를 그 단계의 실제 번호로 바꾼다 (단계를 넣거나 빼도 번호가 맞음)
+function fillNo(s){return s.replace(/\{\{(\w+)\}\}/g,(m,k)=>{const n=STEPS.findIndex(x=>x.key===k); return n<0?m:String(n);});}
 
 /* ── 설명서 ── */
 function renderLesson(){
@@ -890,7 +991,7 @@ function renderLesson(){
   h+=`<h3>확인 3가지</h3><div class="checks">${s.checks.map((t,j)=>`<label class="ck${c[j]?' on':''}" for="ck${i}_${j}"><input type="checkbox" id="ck${i}_${j}" data-ck="${j}"${c[j]?' checked':''}><span>${esc(t)}</span></label>`).join('')}</div>
   <div class="l-done" id="lDone">${isDone(i)?'이 단계 완료! 다음 단계로 가세요.':''}</div>
   <div class="l-nav"><button class="btn" id="prevB"${i===0?' disabled':''}>◀ 이전 단계</button><button class="btn pri" id="nextB"${i===STEPS.length-1?' disabled':''}>다음 단계 ▶</button></div>`;
-  const L=$('#lesson'); L.innerHTML=h;
+  const L=$('#lesson'); L.innerHTML=fillNo(h);
   ['q1','q2','q3'].forEach(id=>{const t=$('#'+id,L); if(t){t.value=ST.notes[id]||''; t.addEventListener('input',()=>{ST.notes[id]=t.value; saveST();});}});
   refreshDl();
 }
@@ -951,14 +1052,15 @@ function resetSim(i){
   RUN++; if(pending){pending.rej(STOP); pending=null;}
   hideRing();
   const s=STEPS[i], init=s.init||{};
-  const ready=i>=STEPS.findIndex(x=>x.key==='first');
+  const ready=i>=STEPS.findIndex(x=>x.key==='first')||!!init.code;
   Object.assign(SIM,{tab:ready?'code':'chat',folder:ready?SETTINGS.folder:null,fs:initFS(i),exPath:'바탕화면',brPath:null,brOverride:null,pickSel:null,
-    su:{email:'',code:false},gh:{name:'',pub:false,dropped:false,committed:false,saved:false},gitN:0,
+    mode:'ask',model:'Sonnet',effort:'보통',
+    su:{email:'',code:false},set:{priv:true,pref:false,saved:false},gh:{name:'',pub:false,dropped:false,committed:false,saved:false},gitN:0,
     lunch:null,todo:[false,false,false],formKind:'입고',formRows:[['2026-04-08','입고','NT-M8 너트 M8','1500','김주임']],formNew:-1,dashLoaded:false,newItem:null});
   $('#msgs').innerHTML=''; $('#inText').textContent=''; $('#inText').classList.remove('focus');
   (init.msgs||[]).forEach(m=>addMsg(m[0],m[0]==='user'?esc(m[1]):m[1]));
   if(!(init.msgs||[]).length) emptyMsg();
-  ['exWin','brWin','pickWin','setupWin','perm','localMenu'].forEach(id=>$('#'+id).hidden=true);
+  ['exWin','brWin','pickWin','setupWin','perm','localMenu','modeMenu','modelMenu'].forEach(id=>$('#'+id).hidden=true);
   syncApp();
   if(init.browse) openBrowser(full(init.browse));
   $('#coverK').textContent='연습 '+pad(i); $('#coverT').textContent=s.title; $('#cover').hidden=false;
@@ -969,7 +1071,13 @@ function syncApp(){
   const app=$('#appWin'); app.classList.toggle('is-code',SIM.tab==='code');
   $('#tChat').classList.toggle('on',SIM.tab!=='code'); $('#tCode').classList.toggle('on',SIM.tab==='code');
   $('#folderChip').innerHTML=SIM.folder?ICON.dir+' '+esc(SIM.folder):'폴더를 고르세요';
+  $('#modeChip').textContent=MODES[SIM.mode]; $('#modelChip').textContent=SIM.model+' 5.5 · '+SIM.effort;
+  $$('#modeMenu [data-k]').forEach(b=>b.classList.toggle('on',b.dataset.k==='mode_'+SIM.mode));
+  $$('#modelMenu [data-k^="model_"]').forEach(b=>b.classList.toggle('on',b.textContent.startsWith(SIM.model)));
+  $$('#modelMenu [data-k^="eff_"]').forEach(b=>b.classList.toggle('on',b.textContent===SIM.effort));
 }
+const MODES={ask:'Manual · 물어봄',edit:'편집 자동 수락',plan:'계획',auto:'자동'};
+function closeMenus(){['localMenu','modeMenu','modelMenu'].forEach(id=>$('#'+id).hidden=true);}
 function cap(t){$('#caption').innerHTML=t;}
 function addMsg(who,html){
   const m=$('#msgs'); const e=m.querySelector('.empty'); if(e) e.remove();
@@ -1060,6 +1168,13 @@ const RENDER={
     <div class="g-plan on"><b>Pro 이상</b><span>Code 탭 사용 · 이 교육에 필요</span><button class="g-btn" data-k="planPro">이 요금제 고르기</button></div></div>
     <p class="g-mut">실제 요금제 이름과 가격은 화면에서 확인하세요.</p></div>`;},
   chatHome:w=>{w.innerHTML=`<div class="g-wrap g-center"><h4>안녕하세요, 무엇을 도와드릴까요?</h4><div class="g-field" style="width:80%">메시지 입력…</div><p class="g-mut">채팅 화면이 뜨면 가입 끝입니다</p></div>`;},
+  settings:w=>{const t=SIM.set; w.innerHTML=`<div class="g-wrap"><h4>설정</h4>
+    <label class="g-lab">개인정보</label>
+    <button class="g-tog${t.priv?' on':''}" data-k="privToggle"><span>Claude 개선에 도움 (내 대화를 학습에 사용)</span><i></i><b>${t.priv?'켜짐':'꺼짐'}</b></button>
+    <label class="g-lab">일반 · 개인 선호사항</label>
+    <button class="g-area" data-k="prefBox">${t.pref?esc(PR.pref).split('\n').join('<br>'):'Claude가 답할 때 고려할 내 선호사항을 적어 주세요'}</button>
+    <button class="g-btn" data-k="prefSave">${t.saved?'저장됨':'저장'}</button>
+    <p class="g-mut">메뉴 이름은 버전에 따라 조금 다를 수 있습니다.</p></div>`;},
   /* GitHub 화면 (모형 · 로고 없음) */
   ghNew:w=>{const g=SIM.gh; w.innerHTML=`<div class="g-wrap"><h4>Create a new repository</h4>
     <label class="g-lab">Repository name</label><button class="g-field" data-k="ghName">${g.name?esc(g.name):'예: jaego-board'}</button>
@@ -1098,9 +1213,14 @@ function computeStock(){
 
 /* 화면 안 클릭: 누구나 자유롭게 눌러 볼 수 있는 동작 */
 const FREE={
-  tabChat:()=>{SIM.tab='chat'; $('#localMenu').hidden=true; syncApp();},
+  tabChat:()=>{SIM.tab='chat'; closeMenus(); syncApp();},
   tabCode:()=>{SIM.tab='code'; syncApp();},
-  local:()=>{$('#localMenu').hidden=!$('#localMenu').hidden;},
+  local:()=>{const h=$('#localMenu').hidden; closeMenus(); $('#localMenu').hidden=!h;},
+  mode:()=>{const h=$('#modeMenu').hidden; closeMenus(); $('#modeMenu').hidden=!h;},
+  model:()=>{const h=$('#modelMenu').hidden; closeMenus(); $('#modelMenu').hidden=!h;},
+  mode_ask:()=>setMode('ask'), mode_edit:()=>setMode('edit'), mode_plan:()=>setMode('plan'), mode_auto:()=>setMode('auto'),
+  model_opus:()=>setModel('Opus'), model_sonnet:()=>setModel('Sonnet'), model_haiku:()=>setModel('Haiku'),
+  eff_low:()=>setEff('낮음'), eff_mid:()=>setEff('보통'), eff_high:()=>setEff('높음'),
   selectFolder:()=>{$('#localMenu').hidden=true; SIM.pickSel=null; renderPick(); $('#pickWin').hidden=false;},
   pick_:k=>{SIM.pickSel=k.slice(5); renderPick();},
   pickOk:()=>{if(!SIM.pickSel) return; SIM.folder=SIM.pickSel; $('#pickWin').hidden=true; syncApp();},
@@ -1123,6 +1243,9 @@ const FREE={
   planPro:()=>goWeb('https://claude.ai/new','chatHome'),
   ghName:()=>{SIM.gh.name='jaego-board'; renderWeb();},
   ghPublic:()=>{SIM.gh.pub=true; renderWeb();},
+  privToggle:()=>{SIM.set.priv=false; renderWeb();},
+  prefBox:()=>{SIM.set.pref=true; renderWeb();},
+  prefSave:()=>{SIM.set.pref=true; SIM.set.saved=true; renderWeb();},
   ghCreate:()=>{SIM.gh.name=SIM.gh.name||'jaego-board'; goWeb('https://github.com/내아이디/jaego-board','ghRepo');},
   ghAdd:()=>goWeb('https://github.com/내아이디/jaego-board/upload','ghUpload'),
   ghDrop:()=>{SIM.gh.dropped=true; renderWeb();},
@@ -1137,6 +1260,9 @@ const FREE={
   reject:()=>{const p=$('#perm'); if(p.hidden) return; p.classList.remove('shake'); void p.offsetWidth; p.classList.add('shake');
     cap('<b>Reject</b>는 "하지 마"라는 뜻입니다. 파일 만들기·고치기·읽기는 <b>Accept</b>, 지우기 요청일 때만 Reject.');}
 };
+function setMode(m){SIM.mode=m; closeMenus(); syncApp();}
+function setModel(m){SIM.model=m; closeMenus(); syncApp();}
+function setEff(e){SIM.effort=e; closeMenus(); syncApp();}
 function renderGit(){
   const n=SIM.gitN, b=$('#setupBody');
   const pages=['설치할 위치를 고릅니다 — 기본값 그대로','구성 요소를 고릅니다 — 기본값 그대로','설치 준비가 끝났습니다'];
@@ -1191,7 +1317,7 @@ const _tap=OPS.tap;
 OPS.tap=async(id,k,label)=>{await _tap(id,k,label); if(k==='send'){const b=$('#inText'); const t=b.textContent; if(t){addMsg('user',esc(t)); b.textContent=''; b.classList.remove('focus');}}};
 function showPerm(kind,path){
   const t={create:'Claude가 파일을 만들려고 합니다',edit:'Claude가 파일을 고치려고 합니다',read:'Claude가 파일을 읽으려고 합니다'}[kind];
-  $('#pTitle').textContent=t; $('#pPath').textContent=SETTINGS.folder+'\\'+path.split('/').join('\\'); $('#perm').hidden=false;
+  $('#pTitle').textContent=t; $('#pPath').textContent=(/^[A-Z]:/.test(path)?'':SETTINGS.folder+'\\')+path.split('/').join('\\'); $('#perm').hidden=false;
 }
 
 async function play(){
