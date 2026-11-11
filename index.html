@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="(주)팬직 직원용 Claude 따라하기 교실 — 가입·설치부터 재고 현황판, GitHub 주소 공유까지 20단계">
+<meta name="description" content="(주)팬직 직원용 Claude 따라하기 교실 — 가입·설치부터 재고 현황판, GitHub 주소 공유까지 Code 교실 20단계, 대화·Design·Skills의 Chat 교실 6단계">
 <style>
 :root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 body{margin:0;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
@@ -67,6 +67,13 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .getcard .btn{min-height:42px;padding:0 16px;font-size:15px;text-decoration:none;color:var(--ink)}
 .prog span{font-family:var(--f-head);font-weight:600;font-size:15px;white-space:nowrap;font-variant-numeric:tabular-nums}
 
+/* 교실 탭 */
+.tracks{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tracks button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:12px 16px;border-radius:14px;border:2px solid var(--line);background:var(--surface);min-height:64px}
+.tracks b{font-family:var(--f-head);font-size:19px}
+.tracks span{font-size:14px;color:var(--muted)}
+.tracks button.on{border-color:var(--accent);background:var(--accent-soft)}
+.tracks button.on b{color:var(--accent)}
 /* 공정 흐름(단계 줄) */
 .line{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
 .line-in{display:flex;align-items:stretch;gap:6px;min-width:max-content}
@@ -190,6 +197,28 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .app:not(.is-code) .code-only{display:none}
 .chat-only{font-size:12.5px;color:var(--app-muted)}
 .app.is-code .chat-only{display:none}
+.chip.chat-only{color:var(--app-ink);font-size:12.5px}
+.chat-only.hint{margin-left:auto}
+/* Design 캔버스: 채팅 옆에 붙는 창 */
+.win.over.canvas{inset:52px 14px 14px 47%}
+#appWin.with-canvas .side{display:none}
+#appWin.with-canvas .chat{margin-right:54%}
+.m-file{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--app-line);background:var(--app-side);color:var(--app-ink);border-radius:8px;padding:6px 10px;font-size:12.5px;margin-top:4px}
+/* Design 모형 */
+.d-bar{position:sticky;top:0;display:flex;gap:6px;justify-content:flex-end;padding:6px 8px;background:#F4F4F4;border-bottom:1px solid #DDD;z-index:2;flex-wrap:wrap}
+.d-bar button{border:1px solid #CCC;background:#fff;color:#1B1B1B;border-radius:6px;padding:3px 10px;font-size:12.5px;font-weight:600}
+.d-page{margin:12px auto;width:min(92%,300px);aspect-ratio:1/1.414;max-width:100%;border-radius:4px;box-shadow:0 2px 10px rgba(0,0,0,.18);display:flex;flex-direction:column;gap:8px;padding:18px 16px;color:#fff;font-family:var(--f-head)}
+.d-page button{all:unset;cursor:pointer;display:block;border-radius:4px;outline:1px dashed transparent}
+.d-page button:hover{outline-color:rgba(255,255,255,.7)}
+.d-ttl{font-size:22px;font-weight:700;line-height:1.25}
+.d-when{font-size:15px;font-weight:600}.d-when.big{font-size:26px}
+.d-line{font-size:13px;opacity:.95}
+.d-contact{font-size:12.5px;margin-top:auto}.d-contact.bold{font-weight:700;font-size:14px}
+.d-pop{position:absolute;right:10px;top:40px;width:200px;background:#fff;color:#1B1B1B;border:1px solid #CCC;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.2);padding:8px;font-size:12.5px;z-index:3;display:flex;flex-direction:column;gap:4px}
+.d-pop button{text-align:left;border:1px solid #DDD;background:#fff;color:#1B1B1B;border-radius:6px;padding:5px 8px}
+.d-pop button.on{border-color:#2E7D4F;font-weight:700}
+.d-cm{position:absolute;left:10px;bottom:10px;width:220px;background:#FFF8D9;color:#1B1B1B;border:1px solid #E0C34A;border-radius:8px;padding:8px;font-size:12.5px;z-index:3;display:flex;flex-direction:column;gap:6px}
+.d-cm button{align-self:flex-end;border:none;border-radius:6px;background:#1F5FD1;color:#fff;padding:4px 10px;font-weight:700}
 .menu{position:absolute;bottom:32px;left:0;min-width:180px;background:var(--app-bg);border:1px solid var(--app-line);border-radius:10px;box-shadow:var(--shadow);padding:6px;z-index:3}
 .menu button{display:block;width:100%;text-align:left;border:none;background:none;padding:7px 10px;border-radius:6px}
 .menu button:hover{background:var(--app-bub)}
@@ -339,15 +368,19 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
   <header class="top">
     <div class="brand">
       <h1>Claude 따라하기 교실</h1>
-      <p id="orgLine">(주)팬직 직원용 · 입문편 12단계 + 업무편 4단계 + 공유편 4단계 · 혼자 보고 따라 하는 원격 교육</p>
+      <p id="orgLine">(주)팬직 직원용 · Code 교실 20단계 · Chat 교실 6단계 · 혼자 보고 따라 하는 원격 교육</p>
     </div>
     <div class="prog" aria-label="진도">
       <div class="bar"><i id="progFill"></i></div>
-      <span id="progText">0 / 20 단계 완료</span>
+      <span id="progText">Code 교실 0 / 20 단계 완료</span>
     </div>
     <div class="getcard" id="getCard" hidden><span>인쇄용 요약카드</span><a class="btn" href="files/claude-card.pdf" download="Claude_요약카드_팬직.pdf">PDF 받기</a><a class="btn" href="files/claude-card.docx" download="Claude_요약카드_팬직.docx">Word 받기</a></div>
   </header>
 
+  <div class="tracks" id="trackTabs" role="tablist" aria-label="교실 고르기">
+    <button role="tab" data-track="code"><b>Code 교실</b><span>설치 · 화면 만들기 · 업무 · GitHub 공유</span></button>
+    <button role="tab" data-track="chat"><b>Chat 교실</b><span>대화 · Design · Skills</span></button>
+  </div>
   <nav class="line" aria-label="단계 목록"><div class="line-in" id="stepLine"></div></nav>
 
   <main class="grid">
@@ -372,7 +405,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
               <div class="comp">
                 <div class="inbox"><div class="intext" id="inText" data-k="input"></div><button class="send" data-k="send" aria-label="보내기">↑</button></div>
                 <div class="crow">
-                  <span class="chat-only">Chat: 대화만 합니다 (파일은 만들지 않음)</span>
+                  <button class="chip chat-only" data-k="attach" id="attachChip">+ 파일 첨부</button>
+                  <button class="chip chat-only" data-k="output" id="outChip">Output ▾</button>
+                  <div class="menu" id="outMenu" hidden><div class="mh">결과물 형식</div><button data-k="out_auto">자동</button><button data-k="out_design">Design</button><button data-k="out_doc">문서</button></div>
+                  <span class="chat-only hint">Chat: 폴더 없이 대화로 일합니다</span>
                   <button class="chip code-only" data-k="folder" id="folderChip"></button>
                   <button class="chip code-only" data-k="local">Local ▾</button>
                   <div class="menu" id="localMenu" hidden><div class="mh">작업할 폴더</div><button data-k="selectFolder">Select folder…</button></div>
@@ -393,7 +429,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
         </div>
 
         <div class="win over" id="brWin" hidden>
-          <div class="tb"><span>인터넷 창</span><span class="wb"><button data-k="close_br" aria-label="닫기">✕</button></span></div>
+          <div class="tb"><span id="brTitle">인터넷 창</span><span class="wb"><button data-k="close_br" aria-label="닫기">✕</button></span></div>
           <div class="brbar"><button data-k="reload" aria-label="새로고침(F5)">⟳ F5</button><div class="addr" id="brAddr"></div></div>
           <div class="web" id="web"></div>
         </div>
@@ -530,6 +566,21 @@ gh:`https://github.com`,
 prep:`결과물\\재고_현황판.html 을 복사해서 공유\\index.html 로 저장해 줘. 원본은 그대로 둬.
 그리고 이 파일 안에 사람 이름·실제 수량·거래처 같은 회사 자료가 직접 들어 있는지 확인해서 알려 줘.`,
 ghurl:`https://[내아이디].github.io/[저장소이름]/`,
+c0:`첨부한 [파일]을 읽고 중요한 내용을 3줄로 요약해 줘. 숫자는 표로 정리해 줘.`,
+d1:`사내 게시판에 붙일 A4 세로 공지문을 디자인해 줘.
+제목: [4월 재고 실사 안내]
+내용: 4월 30일(목) 오후 2시~5시, 자재 창고, 각 팀 1명 참석, 문의 [담당 팀]
+글꼴은 깔끔한 고딕, 색은 남색과 흰색 두 가지만. 글자는 크게.`,
+d2:`전체 색을 초록 계열로 바꾸고, 날짜와 시간을 지금보다 두 배 크게 해 줘.`,
+s1:`아래 내용으로 4월 재고 점검 결과를 Word 보고서(.docx)로 만들어 줘.
+제목, 요약 3줄, 자재별 표(자재 · 현재고 · 안전재고 · 상태)를 넣어 줘. 숫자는 아래 것만 써.
+볼트 M8 800/1000 부족, 너트 M8 2000/1000 정상, 철판 2T 35/40 부족, 도료 회색 50/30 정상, 포장박스 A형 130/100 정상`,
+s2:`우리 팀 주간보고를 매번 같은 양식으로 만드는 스킬을 만들어 줘.
+스킬 이름: weekly-report
+양식: [제목 / 이번 주 한 일 / 다음 주 할 일 / 이슈 / 숫자 요약 표]
+규칙: 한국어, 한 쪽 이내, 숫자는 내가 준 것만 쓰고 지어내지 않기.
+SKILL.md 가 들어 있는 폴더를 ZIP 파일로 만들어 줘.`,
+s2use:`이번 주 주간보고 만들어 줘. 입고 3건, 출고 5건, 볼트 M8 안전재고 부족.`,
 plan:`재고 현황판에 월별 그래프를 넣고 싶어. 파일은 고치지 말고 어떻게 할지 계획만 3줄로 보여 줘.`,
 shot:`이 화면처럼 막혔어. 원인과 해결 방법을 순서대로 알려 줘.`,
 pref:`- 모든 답은 한국어로, 쉬운 말로 써 줘. 전문 용어는 처음 나올 때 한 줄로 풀어 줘.
@@ -576,6 +627,8 @@ COPY.csvio=CSV_IO; COPY.csvsafe=CSV_SAFE;
 
 const simCard=PR.card.replace('[이름]',SETTINGS.name).replace('[예: 궁금하다]',SETTINGS.mood);
 const O='결과물/';
+const FILE_ICON='<svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 2.5h6.5L15.5 6.5V17.5H5z" fill="#FFFFFF" stroke="#8A949E"/><path d="M11.5 2.5v4h4" fill="none" stroke="#8A949E"/></svg>';
+const fileBtn=(k,name)=>`<button class="m-file" data-k="${k}">${FILE_ICON}<span> ${name} · 내려받기</span></button>`;
 
 /* ── 20단계 (입문편 · 업무편 · 공유편). 본문의 단계 번호는 {{key}} 로 쓴다 ── */
 const STEPS=[
@@ -953,7 +1006,119 @@ const STEPS=[
  checks:['오늘 만든 파일을 모두 열어 봤다','질문 3개에 답을 적었다','막히면 {{stuck}}단계 막힘 카드를 본다'],
  scene:[['explorer','바탕화면/AI실습'],['cap','AI실습 폴더입니다. 맨 위에 <b>CLAUDE.md</b>, 재료 CSV 두 개, 결과물 폴더와 공유 폴더.'],['wait',2600],
   ['tap','item_결과물','결과물 폴더'],['cap','오늘 만든 화면들입니다. 하나씩 열어 보세요.'],['wait',1500],
-  ['tap','item_재고_현황판.html','현황판 열기'],['wait',400],['tap','dashLoad','CSV 불러오기'],['cap','수고하셨습니다. 이제 <b>내 업무</b>로 바꿔 만들어 보세요.'],['end']]}
+  ['tap','item_재고_현황판.html','현황판 열기'],['wait',400],['tap','dashLoad','CSV 불러오기'],['cap','수고하셨습니다. 이제 <b>내 업무</b>로 바꿔 만들어 보세요.'],['end']]},
+
+/* ════════ Chat 교실 — 대화 · Design · Skills (폴더·Git 없이) ════════ */
+{track:'chat',part:'Chat 기본',min:10,short:'Chat 기본',key:'c0',init:{chat:true},title:'Chat 기본 — 대화와 파일 첨부',
+ goal:'Chat 탭은 폴더 없이 대화로 일합니다. 글 쓰기·요약·번역·아이디어, 그리고 Design과 Skills를 여기서 씁니다.',
+ todo:['Claude 앱 위 가운데 <b>Chat</b> 탭을 누릅니다(인터넷 창의 <code>claude.ai</code> 도 같습니다).',
+  '<b>새 대화</b>를 엽니다. 한 가지 일은 한 대화에서 끝내는 것이 좋습니다.',
+  '입력창의 <b>+(파일 첨부)</b> 로 엑셀·PDF·사진을 붙이거나, 파일을 입력창으로 끌어다 놓습니다.',
+  '답이 한국어·쉬운 말로 나오는지 봅니다. Code 교실 {{setup}}단계의 개인 선호사항이 적용된 것입니다.'],
+ prompts:[['첨부한 파일 요약하기','c0']],
+ extra:()=>`<h3>Chat과 Code, 언제 무엇을</h3><div class="tbl"><table><tr><th></th><th>Chat</th><th>Code</th></tr>
+  <tr><td>폴더</td><td>필요 없음</td><td>내 PC 폴더를 열고 일함</td></tr>
+  <tr><td>결과</td><td>대화 · 캔버스 · 내려받는 파일</td><td>폴더 안에 생기는 파일(HTML 등)</td></tr>
+  <tr><td>이럴 때</td><td>글 · 요약 · 보고서 · 공지문 · 발표 자료</td><td>업무 화면 만들기 · 여러 파일 정리</td></tr></table></div>`,
+ tip:'<b>회사 자료를 첨부하기 전에</b> 개인정보(주민번호·연락처)나 거래처 단가가 들어 있지 않은지 보고, 애매하면 담당자에게 확인합니다.',
+ checks:['Chat 탭에서 새 대화를 열었다','파일을 첨부해 요약을 받아 봤다','답이 한국어·쉬운 말로 나온다'],
+ scene:[['cap','Chat 탭입니다. 폴더 없이 바로 대화합니다. 먼저 파일을 첨부합니다.'],['tap','attach','+ 파일 첨부'],
+  ['tap','input','입력창'],['type',PR.c0.replace('[파일]','4월_재고.xlsx')],['tap','send','보내기'],['think'],
+  ['say','<p>요약 3줄입니다.</p><ol><li>4월 1~8일 입고 8건·출고 12건이 기록되어 있습니다.</li><li>볼트 M8과 철판 2T가 안전재고보다 적습니다.</li><li>수량이 비어 있는 줄이 1개 있어 확인이 필요합니다.</li></ol><table class="m-tb"><tr><th>자재</th><th>현재고</th><th>안전재고</th></tr><tr><td>볼트 M8</td><td>800</td><td>1,000</td></tr><tr><td>철판 2T</td><td>35</td><td>40</td></tr></table>'],
+  ['cap','첨부한 파일을 읽고 요약과 표를 만들어 줍니다. <b>숫자는 원본과 한 번 맞춰 보세요.</b>'],['wait',1500],['end']]},
+
+{track:'chat',part:'Design',min:15,short:'Design 시작',key:'d1',init:{chat:true},title:'Design 시작 — 말로 한 장짜리 디자인 만들기',
+ goal:'무엇을·누구에게·어떤 내용으로 설명하면, 공지문·포스터·한 장 보고서 같은 디자인이 채팅 옆 캔버스에 만들어집니다.',
+ todo:['입력창의 <b>Output → Design</b> 을 고릅니다. 메뉴가 안 보이면 "디자인으로 만들어 줘"라고 말해도 됩니다.',
+  '지시문을 붙여 넣고 노란 <b>[ ]</b> 칸을 내 것으로 바꿉니다 — 목적, 크기, 내용, 글꼴·색.',
+  '채팅 옆 <b>캔버스</b>에 디자인이 생기면 내용(날짜·장소)이 맞는지 봅니다.'],
+ prompts:[['지시문 D1 공지문 디자인','d1']],
+ extra:()=>`<h3>잘 나오게 하는 요령</h3><div class="tbl"><table><tr><th>요령</th><th>이유</th></tr>
+  <tr><td>글꼴과 색을 먼저 정해 준다</td><td>정하지 않으면 Claude가 자기 취향대로 고릅니다</td></tr>
+  <tr><td>크기·용도를 말한다 (A4 세로, 게시판용)</td><td>인쇄할지 화면으로 볼지에 따라 배치가 달라집니다</td></tr>
+  <tr><td>헷갈리면 "시안 3개를 나란히 보여 줘"</td><td>고르기가 고치기보다 빠릅니다</td></tr></table></div>`,
+ tip:'<b>Design은 요금제의 사용량을 함께 씁니다.</b> 메뉴 위치와 이름은 바뀔 수 있습니다 — 안 보이면 말로 "디자인으로 만들어 줘".',
+ checks:['Output에서 Design을 골랐다(또는 디자인으로 만들어 달라고 했다)','캔버스에 공지문이 생겼다','제목·날짜·장소가 맞게 들어갔다'],
+ scene:[['cap','입력창의 <b>Output</b> 을 누르고 <b>Design</b> 을 고릅니다.'],['tap','output','Output'],['tap','out_design','Design'],
+  ['tap','input','입력창'],['type',PR.d1.replace('[4월 재고 실사 안내]','4월 재고 실사 안내').replace('[담당 팀]','생산관리팀')],['tap','send','보내기'],['think',1600],
+  ['say','공지문 디자인을 캔버스에 만들었습니다. 오른쪽에서 확인해 주세요.'],['canvas'],
+  ['cap','채팅 옆 <b>캔버스</b>에 디자인이 생겼습니다. 날짜·장소가 맞는지 확인합니다.'],['spot','dTitle','만들어진 공지문',2600],['end']]},
+
+{track:'chat',part:'Design',min:15,short:'Design 고치기',key:'d2',init:{chat:true,canvas:true,msgs:[['ai','공지문 디자인을 캔버스에 만들었습니다.']]},title:'Design 고치기 — 채팅 · 코멘트 · 직접 편집',
+ goal:'고치는 방법은 세 가지입니다. 전체는 채팅으로, 한 곳은 코멘트로, 위치·글자는 직접.',
+ todo:['<b>전체를 바꿀 때</b> — 채팅으로 말합니다(색, 배치, 새 칸 추가).',
+  '<b>한 곳만 바꿀 때</b> — 캔버스에서 그 부분을 눌러 <b>코멘트</b>를 남깁니다.',
+  '<b>위치·크기·글자</b> — 캔버스에서 요소를 끌어 옮기고, 글자는 눌러서 바로 고쳐 씁니다. 저장은 저절로 됩니다.'],
+ prompts:[['채팅으로 전체 고치기','d2']],
+ extra:()=>`<div class="tbl"><table><tr><th>방법</th><th>이럴 때</th></tr>
+  <tr><td>채팅</td><td>전체 색 · 배치 · 새 칸 추가</td></tr>
+  <tr><td>코멘트</td><td>한 줄 · 한 칸만 바꾸기</td></tr>
+  <tr><td>직접 편집</td><td>조금 옮기기 · 크기 맞추기 · 오타 고치기</td></tr></table></div>`,
+ tip:'<b>코멘트가 반영되지 않으면</b> 같은 내용을 채팅에 그대로 붙여 넣으면 됩니다.',
+ checks:['채팅으로 색과 글자 크기를 바꿨다','코멘트로 한 곳만 바꿔 봤다','글자를 직접 고치거나 위치를 옮겨 봤다'],
+ scene:[['cap','먼저 <b>채팅</b>으로 전체를 바꿉니다.'],['tap','input','입력창'],['type',PR.d2],['tap','send','보내기'],['think'],
+  ['canvas',{color:'green',big:true}],['say','색을 초록 계열로 바꾸고 날짜·시간을 크게 했습니다.'],
+  ['cap','이번엔 <b>한 곳만</b>. 캔버스의 "문의" 줄을 눌러 코멘트를 남깁니다.'],['tap','dContact','이 줄 누르기'],['tap','dCommentSend','코멘트 보내기'],
+  ['cap','그 줄만 바뀌었습니다. 위치·글자는 캔버스에서 <b>직접</b> 끌어 옮기거나 눌러 고쳐 씁니다.'],['spot','dTitle','끌어 옮기기 · 바로 고쳐 쓰기',2600],['end']]},
+
+{track:'chat',part:'Design',min:10,short:'내보내기·공유',key:'d3',init:{chat:true,canvas:true,d:{color:'green',big:true,bold:true},msgs:[['ai','공지문 디자인을 고쳤습니다.']]},title:'Design 내보내기와 공유',
+ goal:'다 만든 디자인은 파일로 내보내 인쇄·게시하거나, 링크로 공유합니다.',
+ todo:['캔버스 오른쪽 위 <b>Export</b> → <b>PDF</b>(인쇄·게시), <b>PPTX</b>(발표), <b>HTML</b>(웹) 중에서 고릅니다.',
+  '<b>Share</b> → 누구에게, <b>보기 · 코멘트 · 편집</b> 중 어떤 권한으로 줄지 고릅니다. 기본은 나만 보는 비공개입니다.',
+  '회사 밖 사람과 공유하거나 공개할 때는 먼저 담당자에게 확인합니다.',
+  '디자인을 실제 업무 화면으로 만들고 싶으면 Code 교실처럼 Claude Code로 넘겨 만들 수 있습니다.'],
+ prompts:[],
+ extra:()=>`<div class="tbl"><table><tr><th>내보내기</th><th>이럴 때</th></tr>
+  <tr><td>PDF</td><td>인쇄해서 게시판에 붙이기, 메일 첨부</td></tr>
+  <tr><td>PPTX</td><td>회의 발표 자료로 이어서 고치기</td></tr>
+  <tr><td>HTML</td><td>웹 페이지로 쓰기 — Code 교실의 GitHub 주소 공유와 이어짐</td></tr></table></div>`,
+ tip:'<b>휴대폰 앱에서는</b> 공유 설정을 바꿀 수 없습니다. PC의 앱이나 claude.ai에서 합니다.',
+ checks:['Export로 PDF를 내려받았다','Share에서 권한(보기·코멘트·편집)을 확인했다','회사 밖 공유는 담당자 확인이 필요하다는 것을 안다'],
+ scene:[['cap','오른쪽 위 <b>Export</b> 를 누릅니다.'],['tap','dExport','Export'],['tap','exp_pdf','PDF'],
+  ['cap','PDF를 내려받았습니다. 이제 <b>Share</b> 로 공유 권한을 봅니다.'],['tap','dShare','Share'],['tap','shr_view','보기 권한'],
+  ['cap','같이 고칠 사람에게만 <b>편집</b>, 보기만 할 사람에게는 <b>보기</b>를 줍니다.'],['wait',1800],['end']]},
+
+{track:'chat',part:'Skills',min:15,short:'Skills 켜기',key:'s1',init:{chat:true},title:'Skills 켜기 — Word · Excel · PPT 파일 받기',
+ goal:'스킬은 Claude에게 주는 "일하는 요령 묶음"입니다. 켜 두면 Word·Excel·PowerPoint·PDF 파일을 직접 만들어 내려받게 해 줍니다.',
+ todo:['claude.ai 내 이름 → <b>설정 → 기능(Capabilities)</b> → <b>"파일 만들기·편집"(코드 실행)</b> 을 켭니다.',
+  '<b>Customize → Skills</b> 에서 기본 스킬(Word·Excel·PowerPoint·PDF)이 켜져 있는지 봅니다.',
+  '채팅에서 결과물 형식을 말하면("Word 보고서로", "엑셀 표로") 맞는 스킬이 <b>저절로</b> 쓰입니다. 따로 불러낼 필요 없습니다.',
+  '답에 나온 파일을 눌러 내려받습니다.'],
+ prompts:[['Word 보고서 만들기','s1']],
+ extra:()=>`<div class="tbl"><table><tr><th>이렇게 말하면</th><th>쓰이는 스킬</th></tr>
+  <tr><td>"Word 보고서(.docx)로 만들어 줘"</td><td>Word</td></tr>
+  <tr><td>"엑셀 표(.xlsx)로 만들어 줘"</td><td>Excel</td></tr>
+  <tr><td>"발표 자료 5장으로 만들어 줘"</td><td>PowerPoint</td></tr>
+  <tr><td>"PDF로 만들어 줘"</td><td>PDF</td></tr></table></div>`,
+ tip:'<b>메뉴 이름은 바뀔 수 있습니다.</b> "파일 만들기·편집"이 꺼져 있으면 스킬이 동작하지 않습니다.',
+ checks:['파일 만들기·편집을 켰다','Word 보고서 파일을 내려받았다','내용(표·숫자)을 원본과 맞춰 봤다'],
+ scene:[['web','https://claude.ai/settings/capabilities','caps'],['cap','설정 → 기능에서 <b>파일 만들기·편집</b>을 켭니다.'],['tap','capFiles','켜기'],
+  ['cap','기본 스킬(Word·Excel·PowerPoint·PDF)이 켜져 있습니다.'],['wait',1600],['close','br'],
+  ['tap','input','입력창'],['type',PR.s1],['tap','send','보내기'],['think',1600],
+  ['say','<p>Word 스킬로 보고서를 만들었습니다. 제목, 요약 3줄, 자재별 표가 들어 있습니다.</p>'+fileBtn('fileDocx','4월_재고점검_보고서.docx')],
+  ['cap','파일을 눌러 내려받습니다.'],['tap','fileDocx','내려받기'],['cap','내려받은 Word 파일을 열어 숫자를 원본과 맞춰 봅니다.'],['wait',1200],['end']]},
+
+{track:'chat',part:'Skills',min:20,short:'나만의 스킬',key:'s2',init:{chat:true},title:'나만의 스킬 — 우리 팀 양식을 스킬로',
+ goal:'매주 같은 양식으로 만드는 문서가 있다면, 그 요령을 스킬로 만들어 두고 "이번 주 것 만들어 줘" 한마디로 씁니다.',
+ todo:['지시문을 붙여 넣고 <b>[ ]</b> 칸(양식)을 우리 팀 것으로 채워 보냅니다. Claude가 스킬 폴더를 <b>ZIP 파일</b>로 만들어 줍니다 → 내려받기.',
+  '<b>Customize → Skills</b> → <b>+</b> → <b>Create skill</b> → <b>Upload a skill</b> → 받은 ZIP을 고릅니다.',
+  '목록에 생긴 스킬을 <b>켭니다</b>.',
+  '새 대화에서 "이번 주 주간보고 만들어 줘"라고 하면 그 양식대로 만들어집니다.'],
+ prompts:[['스킬 만들기','s2'],['스킬로 일 시키기','s2use']],
+ extra:()=>`<h3>알아 둘 것</h3><div class="tbl"><table><tr><th></th><th>내용</th></tr>
+  <tr><td>누구에게 적용</td><td>내가 올린 스킬은 <b>내 계정에만</b> 적용됩니다. 동료에게는 ZIP 파일을 주고 각자 올립니다.</td></tr>
+  <tr><td>Claude Code</td><td>claude.ai에 올린 스킬은 Claude Code에 저절로 들어가지 않습니다. 따로 넣어야 합니다.</td></tr>
+  <tr><td>올리기가 안 될 때</td><td>ZIP 크기, 폴더 이름과 스킬 이름이 같은지, 안에 SKILL.md 파일이 있는지 봅니다. 안 되면 오류 화면을 캡처해 Claude에게 묻습니다.</td></tr></table></div>`,
+ tip:'<b>숫자를 지어내지 않기</b> 같은 규칙을 스킬에 넣어 두면, 매번 말하지 않아도 지켜집니다.',
+ checks:['스킬 ZIP 파일을 받았다','Upload a skill로 올리고 켰다','새 대화에서 양식대로 만들어지는지 봤다'],
+ scene:[['tap','input','입력창'],['type',PR.s2.replace('[제목 / 이번 주 한 일 / 다음 주 할 일 / 이슈 / 숫자 요약 표]','제목 / 이번 주 한 일 / 다음 주 할 일 / 이슈 / 숫자 요약 표')],['tap','send','보내기'],['think',1600],
+  ['say','<p>주간보고 스킬을 만들었습니다. SKILL.md 가 든 <b>weekly-report</b> 폴더를 ZIP으로 묶었습니다.</p>'+fileBtn('fileZip','weekly-report.zip')],
+  ['tap','fileZip','ZIP 내려받기'],
+  ['web','https://claude.ai/customize/skills','skills'],['cap','<b>Customize → Skills</b> 에서 <b>+</b> 를 누릅니다.'],['tap','skAdd','+'],['tap','skUpload','Upload a skill'],
+  ['cap','목록에 생긴 스킬을 <b>켭니다</b>.'],['tap','sk_weekly','켜기'],['close','br'],
+  ['cap','새 대화에서 한마디로 시켜 봅니다.'],['tap','input','입력창'],['type',PR.s2use],['tap','send','보내기'],['think'],
+  ['say','<p><b>weekly-report</b> 스킬의 양식대로 만들었습니다.</p><table class="m-tb"><tr><th>항목</th><th>내용</th></tr><tr><td>이번 주 한 일</td><td>입고 3건, 출고 5건 처리</td></tr><tr><td>이슈</td><td>볼트 M8 안전재고 부족</td></tr><tr><td>다음 주 할 일</td><td>볼트 M8 발주 확인</td></tr></table>'],
+  ['cap','스킬 덕분에 양식을 다시 설명하지 않아도 됩니다.'],['wait',1200],['end']]}
 ];
 
 /* ── 상태(이 브라우저에만 저장) ── */
@@ -964,33 +1129,41 @@ function saveST(){try{localStorage.setItem(KEY,JSON.stringify(ST));}catch(e){}}
 const isDone=i=>{const c=ST.checks[i]||[];return STEPS[i].checks.every((_,j)=>c[j]);};
 
 /* ── 단계 줄(공정 흐름) ── */
+/* 교실(탭): code = Code 교실, chat = Chat 교실 */
+const trackOf=i=>STEPS[i].track||'code';
+const TRACKS={code:'Code 교실',chat:'Chat 교실'};
+const inTrack=t=>STEPS.map((s,i)=>i).filter(i=>trackOf(i)===t);
+function lab(i){const t=trackOf(i), pos=inTrack(t).indexOf(i); return t==='chat'?'C'+pos:String(pos);}
 function renderLine(){
-  let h='';
-  STEPS.forEach((s,i)=>{
-    if(i===0||STEPS[i-1].part!==s.part) h+=`<span class="part${i?' p2':''}">${s.part}</span>`;
-    h+=`<button class="st${i===ST.cur?' on':''}${isDone(i)?' done':''}" data-step="${i}" aria-current="${i===ST.cur?'step':'false'}"><span class="n">${isDone(i)?'✓':i}</span><span class="t">${esc(s.short)}</span></button>`;
+  let h=''; const tr=trackOf(ST.cur), list=inTrack(tr);
+  list.forEach((i,k)=>{const s=STEPS[i];
+    if(k===0||STEPS[list[k-1]].part!==s.part) h+=`<span class="part${k?' p2':''}">${s.part}</span>`;
+    h+=`<button class="st${i===ST.cur?' on':''}${isDone(i)?' done':''}" data-step="${i}" aria-current="${i===ST.cur?'step':'false'}"><span class="n">${isDone(i)?'✓':lab(i)}</span><span class="t">${esc(s.short)}</span></button>`;
   });
   $('#stepLine').innerHTML=h;
-  const n=STEPS.filter((_,i)=>isDone(i)).length;
-  $('#progFill').style.width=(n/STEPS.length*100)+'%';
-  $('#progText').textContent=n+' / '+STEPS.length+' 단계 완료';
+  $$('#trackTabs [data-track]').forEach(b=>{const on=b.dataset.track===tr; b.classList.toggle('on',on); b.setAttribute('aria-selected',on);});
+  const n=list.filter(i=>isDone(i)).length;
+  $('#progFill').style.width=(n/list.length*100)+'%';
+  $('#progText').textContent=TRACKS[tr]+' '+n+' / '+list.length+' 단계 완료';
   const on=$('.st.on'); if(on){const ln=$('.line'); const l=ln.scrollLeft+(on.getBoundingClientRect().left-ln.getBoundingClientRect().left)-ln.clientWidth/2+on.clientWidth/2; ln.scrollLeft=Math.max(0,l);}
 }
 function mark(t){return esc(t).replace(/\[[^\]\n]*\]/g,m=>`<mark>${m}</mark>`);}
 // 본문 속 {{key}} 를 그 단계의 실제 번호로 바꾼다 (단계를 넣거나 빼도 번호가 맞음)
-function fillNo(s){return s.replace(/\{\{(\w+)\}\}/g,(m,k)=>{const n=STEPS.findIndex(x=>x.key===k); return n<0?m:String(n);});}
+function fillNo(s){return s.replace(/\{\{(\w+)\}\}/g,(m,k)=>{const n=STEPS.findIndex(x=>x.key===k); return n<0?m:lab(n);});}
+const prevIn=i=>{const l=inTrack(trackOf(i)), p=l.indexOf(i); return p>0?l[p-1]:-1;};
+const nextIn=i=>{const l=inTrack(trackOf(i)), p=l.indexOf(i); return p<l.length-1?l[p+1]:-1;};
 
 /* ── 설명서 ── */
 function renderLesson(){
   const i=ST.cur, s=STEPS[i], c=ST.checks[i]||[];
-  let h=`<div class="l-head"><div class="l-no">${pad(i)}</div><div><div class="l-meta">${s.part} · 약 ${s.min}분</div><h2>${esc(s.title)}</h2></div></div>
+  let h=`<div class="l-head"><div class="l-no">${trackOf(i)==='chat'?lab(i):pad(i)}</div><div><div class="l-meta">${s.part} · 약 ${s.min}분</div><h2>${esc(s.title)}</h2></div></div>
   <p class="l-goal">${s.goal}</p><h3>이렇게 하세요</h3><ol class="l-todo">${s.todo.map(t=>`<li><span>${t}</span></li>`).join('')}</ol>`;
   s.prompts.forEach(p=>{h+=`<div class="pbox"><div class="pbox-h"><b>${esc(p[0])}</b><button class="copy" data-copy="${p[1]}">복사</button></div><pre>${mark(PR[p[1]])}</pre></div>`;});
   if(s.extra) h+=s.extra();
   if(s.tip) h+=`<div class="tip">${s.tip}</div>`;
   h+=`<h3>확인 3가지</h3><div class="checks">${s.checks.map((t,j)=>`<label class="ck${c[j]?' on':''}" for="ck${i}_${j}"><input type="checkbox" id="ck${i}_${j}" data-ck="${j}"${c[j]?' checked':''}><span>${esc(t)}</span></label>`).join('')}</div>
   <div class="l-done" id="lDone">${isDone(i)?'이 단계 완료! 다음 단계로 가세요.':''}</div>
-  <div class="l-nav"><button class="btn" id="prevB"${i===0?' disabled':''}>◀ 이전 단계</button><button class="btn pri" id="nextB"${i===STEPS.length-1?' disabled':''}>다음 단계 ▶</button></div>`;
+  <div class="l-nav"><button class="btn" id="prevB"${prevIn(i)<0?' disabled':''}>◀ 이전 단계</button><button class="btn pri" id="nextB"${nextIn(i)<0?' disabled':''}>다음 단계 ▶</button></div>`;
   const L=$('#lesson'); L.innerHTML=fillNo(h);
   ['q1','q2','q3'].forEach(id=>{const t=$('#'+id,L); if(t){t.value=ST.notes[id]||''; t.addEventListener('input',()=>{ST.notes[id]=t.value; saveST();});}});
   refreshDl();
@@ -1001,8 +1174,8 @@ $('#lesson').addEventListener('click',e=>{
     const fallback=()=>{const pre=cp.closest('.pbox').querySelector('pre'); const r=document.createRange(); r.selectNodeContents(pre); const sel=getSelection(); sel.removeAllRanges(); sel.addRange(r); cp.textContent='선택됨 · Ctrl+C';};
     try{navigator.clipboard.writeText(txt).then(done,fallback);}catch(err){fallback();} return;}
   const d=e.target.closest('[data-dl]'); if(d){doDl(d.dataset.dl); return;}
-  if(e.target.closest('#prevB')) go(ST.cur-1);
-  if(e.target.closest('#nextB')) go(ST.cur+1);
+  if(e.target.closest('#prevB')) go(prevIn(ST.cur));
+  if(e.target.closest('#nextB')) go(nextIn(ST.cur));
 });
 $('#lesson').addEventListener('change',e=>{
   const ck=e.target.closest('[data-ck]'); if(!ck) return;
@@ -1052,18 +1225,21 @@ function resetSim(i){
   RUN++; if(pending){pending.rej(STOP); pending=null;}
   hideRing();
   const s=STEPS[i], init=s.init||{};
-  const ready=i>=STEPS.findIndex(x=>x.key==='first')||!!init.code;
-  Object.assign(SIM,{tab:ready?'code':'chat',folder:ready?SETTINGS.folder:null,fs:initFS(i),exPath:'바탕화면',brPath:null,brOverride:null,pickSel:null,
+  const ready=(i>=STEPS.findIndex(x=>x.key==='first')||!!init.code)&&trackOf(i)==='code';
+  Object.assign(SIM,{tab:ready?'code':'chat',attached:false,output:'자동',
+    d:Object.assign({color:'navy',big:false,bold:false,comment:false,exp:false,share:false,shareLv:'',saved:''},init.d||{}),
+    caps:{files:false},sk:{menu:false,weekly:false,on:false},folder:ready?SETTINGS.folder:null,fs:initFS(i),exPath:'바탕화면',brPath:null,brOverride:null,pickSel:null,
     mode:'ask',model:'Sonnet',effort:'보통',
     su:{email:'',code:false},set:{priv:true,pref:false,saved:false},gh:{name:'',pub:false,dropped:false,committed:false,saved:false},gitN:0,
     lunch:null,todo:[false,false,false],formKind:'입고',formRows:[['2026-04-08','입고','NT-M8 너트 M8','1500','김주임']],formNew:-1,dashLoaded:false,newItem:null});
   $('#msgs').innerHTML=''; $('#inText').textContent=''; $('#inText').classList.remove('focus');
   (init.msgs||[]).forEach(m=>addMsg(m[0],m[0]==='user'?esc(m[1]):m[1]));
   if(!(init.msgs||[]).length) emptyMsg();
-  ['exWin','brWin','pickWin','setupWin','perm','localMenu','modeMenu','modelMenu'].forEach(id=>$('#'+id).hidden=true);
-  syncApp();
+  ['exWin','brWin','pickWin','setupWin','perm','localMenu','modeMenu','modelMenu','outMenu'].forEach(id=>$('#'+id).hidden=true);
+  closeCanvas(); syncApp();
   if(init.browse) openBrowser(full(init.browse));
-  $('#coverK').textContent='연습 '+pad(i); $('#coverT').textContent=s.title; $('#cover').hidden=false;
+  if(init.canvas) openCanvas();
+  $('#coverK').textContent='연습 '+lab(i); $('#coverT').textContent=s.title; $('#cover').hidden=false;
   cap('[연습 시작]을 누르면 따라 하기가 시작됩니다.');
 }
 function emptyMsg(){$('#msgs').innerHTML='<div class="empty">무엇을 만들어 볼까요?</div>';}
@@ -1071,13 +1247,20 @@ function syncApp(){
   const app=$('#appWin'); app.classList.toggle('is-code',SIM.tab==='code');
   $('#tChat').classList.toggle('on',SIM.tab!=='code'); $('#tCode').classList.toggle('on',SIM.tab==='code');
   $('#folderChip').innerHTML=SIM.folder?ICON.dir+' '+esc(SIM.folder):'폴더를 고르세요';
+  $('#outChip').textContent=SIM.output==='자동'?'Output ▾':'Output: '+SIM.output;
+  $('#attachChip').textContent=SIM.attached?'4월_재고.xlsx 첨부됨':'+ 파일 첨부';
   $('#modeChip').textContent=MODES[SIM.mode]; $('#modelChip').textContent=SIM.model+' 5.5 · '+SIM.effort;
   $$('#modeMenu [data-k]').forEach(b=>b.classList.toggle('on',b.dataset.k==='mode_'+SIM.mode));
   $$('#modelMenu [data-k^="model_"]').forEach(b=>b.classList.toggle('on',b.textContent.startsWith(SIM.model)));
   $$('#modelMenu [data-k^="eff_"]').forEach(b=>b.classList.toggle('on',b.textContent===SIM.effort));
 }
 const MODES={ask:'Manual · 물어봄',edit:'편집 자동 수락',plan:'계획',auto:'자동'};
-function closeMenus(){['localMenu','modeMenu','modelMenu'].forEach(id=>$('#'+id).hidden=true);}
+function closeMenus(){['localMenu','modeMenu','modelMenu','outMenu'].forEach(id=>$('#'+id).hidden=true);}
+function openCanvas(){
+  $('#appWin').classList.add('with-canvas'); const w=$('#brWin'); w.classList.add('canvas'); $('#brTitle').textContent='Design 캔버스';
+  SIM.brPath=null; SIM.brOverride='design'; w.hidden=false; $('#brAddr').textContent='claude.ai · 공지문 디자인'; renderWeb();
+}
+function closeCanvas(){$('#appWin').classList.remove('with-canvas'); $('#brWin').classList.remove('canvas'); $('#brTitle').textContent='인터넷 창';}
 function cap(t){$('#caption').innerHTML=t;}
 function addMsg(who,html){
   const m=$('#msgs'); const e=m.querySelector('.empty'); if(e) e.remove();
@@ -1121,14 +1304,13 @@ function renderEx(){
 function openEx(path){SIM.exPath=path; renderEx(); $('#exWin').hidden=false;}
 /* 브라우저 */
 function openBrowser(path,override){
-  SIM.brPath=path; SIM.brOverride=override||null; $('#brWin').hidden=false;
+  closeCanvas(); SIM.brPath=path; SIM.brOverride=override||null; $('#brWin').hidden=false;
   $('#brAddr').textContent='C:\\Users\\나\\'+path.replace('바탕화면','Desktop').split('/').join('\\');
   renderWeb();
 }
 function openWeb(url,key){
-  SIM.brPath=null; SIM.brOverride=key; $('#brWin').hidden=false; $('#brAddr').textContent=url; renderWeb();
-}
-function goWeb(url,key){ $('#brAddr').textContent=url; SIM.brOverride=key; renderWeb(); }
+  closeCanvas(); SIM.brPath=null; SIM.brOverride=key; $('#brWin').hidden=false; $('#brAddr').textContent=url; renderWeb();
+}function goWeb(url,key){ $('#brAddr').textContent=url; SIM.brOverride=key; renderWeb(); }
 function renderWeb(){
   const f=SIM.fs.get(SIM.brPath); const key=SIM.brOverride||(f&&f.render)||'none';
   const w=$('#web'); (RENDER[key]||RENDER.none)(w);
@@ -1175,6 +1357,31 @@ const RENDER={
     <button class="g-area" data-k="prefBox">${t.pref?esc(PR.pref).split('\n').join('<br>'):'Claude가 답할 때 고려할 내 선호사항을 적어 주세요'}</button>
     <button class="g-btn" data-k="prefSave">${t.saved?'저장됨':'저장'}</button>
     <p class="g-mut">메뉴 이름은 버전에 따라 조금 다를 수 있습니다.</p></div>`;},
+  /* Design 캔버스 (모형) */
+  design:w=>{const d=SIM.d, bg=d.color==='green'?'#2E7D4F':'#1F3A68';
+    w.innerHTML=`<div class="d-bar"><button data-k="dShare">Share</button><button data-k="dExport">Export ▾</button></div>
+    ${d.exp?`<div class="d-pop"><b>내보내기</b><button data-k="exp_pdf">PDF — 인쇄·게시</button><button data-k="exp_pptx">PPTX — 발표 자료</button><button data-k="exp_html">HTML — 웹 페이지</button><button>Canva 등 연결된 도구</button></div>`:''}
+    ${d.share?`<div class="d-pop"><b>공유 — 기본은 비공개</b>${['보기','코멘트','편집'].map((x,n)=>`<button data-k="${['shr_view','shr_comment','shr_edit'][n]}" class="${d.shareLv===x?'on':''}">${x} 권한</button>`).join('')}<span style="color:#666">회사 밖 공유는 담당자 확인</span></div>`:''}
+    <div class="d-page" style="background:${bg}">
+      <button class="d-ttl" data-k="dTitle">4월 재고 실사 안내</button>
+      <div class="d-when${d.big?' big':''}">4월 30일(목) 14:00 ~ 17:00</div>
+      <div class="d-line">장소 · 자재 창고</div><div class="d-line">각 팀 1명 참석</div>
+      <button class="d-contact${d.bold?' bold':''}" data-k="dContact">문의 · 생산관리팀</button>
+    </div>
+    ${d.comment?`<div class="d-cm"><b>코멘트</b><span>이 줄을 굵게, 조금 크게 해 줘</span><button data-k="dCommentSend">보내기</button></div>`:''}
+    ${d.saved?`<p class="g-mut" style="text-align:center">${d.saved} 파일을 내려받았습니다.</p>`:''}`;},
+  /* 설정 · 기능 (모형) */
+  caps:w=>{const c=SIM.caps; w.innerHTML=`<div class="g-wrap"><h4>설정 · 기능(Capabilities)</h4>
+    <button class="g-tog${c.files?' on':''}" data-k="capFiles"><span>파일 만들기·편집 (코드 실행)</span><i></i><b>${c.files?'켜짐':'꺼짐'}</b></button>
+    <label class="g-lab">기본 스킬 (Customize › Skills)</label>
+    ${['Word (docx)','Excel (xlsx)','PowerPoint (pptx)','PDF'].map(x=>`<div class="g-tog on" style="cursor:default"><span>${x}</span><i></i><b>켜짐</b></div>`).join('')}
+    <p class="g-mut">파일 만들기가 켜져 있어야 스킬이 동작합니다. 메뉴 이름은 바뀔 수 있습니다.</p></div>`;},
+  /* Customize › Skills (모형) */
+  skills:w=>{const s=SIM.sk; w.innerHTML=`<div class="g-wrap"><div class="g-row" style="justify-content:space-between"><h4>Skills</h4><button class="g-btn alt" data-k="skAdd">+</button></div>
+    ${s.menu?`<div class="d-pop" style="position:static;width:auto"><button>+ Create skill</button><button data-k="skUpload">Upload a skill (ZIP)</button></div>`:''}
+    ${['Word (docx)','Excel (xlsx)','PowerPoint (pptx)','PDF'].map(x=>`<div class="g-tog on" style="cursor:default"><span>${x}</span><i></i><b>켜짐</b></div>`).join('')}
+    ${s.weekly?`<button class="g-tog${s.on?' on':''}" data-k="sk_weekly"><span>weekly-report · 내가 올린 스킬</span><i></i><b>${s.on?'켜짐':'꺼짐'}</b></button>`:''}
+    <p class="g-mut">내가 올린 스킬은 내 계정에만 적용됩니다.</p></div>`;},
   /* GitHub 화면 (모형 · 로고 없음) */
   ghNew:w=>{const g=SIM.gh; w.innerHTML=`<div class="g-wrap"><h4>Create a new repository</h4>
     <label class="g-lab">Repository name</label><button class="g-field" data-k="ghName">${g.name?esc(g.name):'예: jaego-board'}</button>
@@ -1226,7 +1433,29 @@ const FREE={
   pickOk:()=>{if(!SIM.pickSel) return; SIM.folder=SIM.pickSel; $('#pickWin').hidden=true; syncApp();},
   close_pick:()=>{$('#pickWin').hidden=true;},
   close_ex:()=>{$('#exWin').hidden=true;},
-  close_br:()=>{$('#brWin').hidden=true;},
+  close_br:()=>{$('#brWin').hidden=true; closeCanvas();},
+  attach:()=>{SIM.attached=true; syncApp();},
+  output:()=>{const h=$('#outMenu').hidden; closeMenus(); $('#outMenu').hidden=!h;},
+  out_auto:()=>{SIM.output='자동'; closeMenus(); syncApp();},
+  out_design:()=>{SIM.output='Design'; closeMenus(); syncApp();},
+  out_doc:()=>{SIM.output='문서'; closeMenus(); syncApp();},
+  dContact:()=>{SIM.d.comment=true; renderWeb();},
+  dCommentSend:()=>{SIM.d.comment=false; SIM.d.bold=true; renderWeb();},
+  dTitle:()=>{},
+  dExport:()=>{SIM.d.exp=!SIM.d.exp; SIM.d.share=false; renderWeb();},
+  exp_pdf:()=>{SIM.d.exp=false; SIM.d.saved='PDF'; renderWeb();},
+  exp_pptx:()=>{SIM.d.exp=false; SIM.d.saved='PPTX'; renderWeb();},
+  exp_html:()=>{SIM.d.exp=false; SIM.d.saved='HTML'; renderWeb();},
+  dShare:()=>{SIM.d.share=!SIM.d.share; SIM.d.exp=false; renderWeb();},
+  shr_view:()=>{SIM.d.shareLv='보기'; renderWeb();},
+  shr_comment:()=>{SIM.d.shareLv='코멘트'; renderWeb();},
+  shr_edit:()=>{SIM.d.shareLv='편집'; renderWeb();},
+  capFiles:()=>{SIM.caps.files=!SIM.caps.files; renderWeb();},
+  skAdd:()=>{SIM.sk.menu=!SIM.sk.menu; renderWeb();},
+  skUpload:()=>{SIM.sk.menu=false; SIM.sk.weekly=true; renderWeb();},
+  sk_weekly:()=>{SIM.sk.on=!SIM.sk.on; renderWeb();},
+  fileDocx:()=>{const b=screen.querySelector('[data-k="fileDocx"]'); if(b) b.lastChild.textContent=' 4월_재고점검_보고서.docx · 내려받음';},
+  fileZip:()=>{const b=screen.querySelector('[data-k="fileZip"]'); if(b) b.lastChild.textContent=' weekly-report.zip · 내려받음';},
   up:()=>{const p=SIM.exPath.split('/'); if(p.length>1){p.pop(); SIM.exPath=p.join('/'); renderEx();}},
   item_:k=>{const n=k.slice(5), p=SIM.exPath+'/'+n; if(SIM.fs.has(p+'/')||children(p).length){SIM.exPath=p; renderEx();} else if(SIM.fs.has(p)) openBrowser(p);},
   reload:()=>{if(!SIM.brPath&&!SIM.brOverride) return; if(SIM.brPath) SIM.brOverride=null; const w=$('#web'); w.classList.remove('flash'); void w.offsetWidth; w.classList.add('flash'); renderWeb();},
@@ -1310,6 +1539,8 @@ const OPS={
     else if(phase==='git'){$('#setupTitle').textContent='Git for Windows 설치'; SIM.gitN=0; renderGit();}
     else {$('#setupTitle').textContent='Claude'; b.innerHTML='<h4>Claude에 오신 것을 환영합니다</h4><div style="color:var(--app-muted)">0단계에서 만든 계정으로 로그인하세요</div><button class="bigbtn" data-k="login">로그인</button>';}},
   web:(id,url,key)=>openWeb(url,key),
+  canvas:(id,patch)=>{if(patch) Object.assign(SIM.d,patch); if($('#brWin').hidden||SIM.brOverride!=='design') openCanvas(); else renderWeb();},
+  set:(id,obj)=>{Object.assign(SIM,obj); syncApp();},
   end:()=>{cap('연습 끝! 이제 <b>실제 Claude 앱</b>에서 똑같이 해 보세요. 끝나면 왼쪽 <b>확인 3가지</b>를 체크합니다.');}
 };
 // 보내기: 입력창 글을 말풍선으로 옮김 (tap send 다음에 자동 실행)
@@ -1332,15 +1563,19 @@ $('#skip').addEventListener('click',()=>{ if(pending) handleK(pending.k); else i
 /* ── 이동 ── */
 function go(i){
   if(i<0||i>=STEPS.length) return;
-  ST.cur=i; saveST(); renderLine(); renderLesson(); resetSim(i);
+  ST.cur=i; ST.last=ST.last||{}; ST.last[trackOf(i)]=i; saveST(); renderLine(); renderLesson(); resetSim(i);
   if(location.hash!=='#step-'+i){try{history.replaceState(null,'','#step-'+i);}catch(e){location.hash='step-'+i;}}
   const L=$('#lesson'); const top=L.getBoundingClientRect().top; if(top<0) L.scrollIntoView({block:'start',behavior:RM?'auto':'smooth'});
 }
-function fromHash(){const m=location.hash.match(/^#step-(\d+)$/); return m?Math.min(STEPS.length-1,+m[1]):null;}
+function fromHash(){
+  if(location.hash==='#chat') return trackOf(ST.cur)==='chat'?ST.cur:inTrack('chat')[0];  // 주소 끝 #chat = Chat 교실로 바로
+  if(location.hash==='#code') return trackOf(ST.cur)==='code'?ST.cur:0;
+  const m=location.hash.match(/^#step-(\d+)$/); return m?Math.min(STEPS.length-1,+m[1]):null;}
 addEventListener('hashchange',()=>{const h=fromHash(); if(h!==null&&h!==ST.cur) go(h);});
 
-{const cnt={}; STEPS.forEach(s=>cnt[s.part]=(cnt[s.part]||0)+1);
- $('#orgLine').textContent=SETTINGS.company+' 직원용 · '+Object.keys(cnt).map(k=>k+' '+cnt[k]+'단계').join(' + ')+' · 혼자 보고 따라 하는 원격 교육';}
+$('#orgLine').textContent=SETTINGS.company+' 직원용 · '+Object.keys(TRACKS).map(t=>TRACKS[t]+' '+inTrack(t).length+'단계').join(' · ')+' · 혼자 보고 따라 하는 원격 교육';
+$('#trackTabs').addEventListener('click',e=>{const b=e.target.closest('[data-track]'); if(!b) return; const t=b.dataset.track; if(t===trackOf(ST.cur)) return;
+  const last=ST.last&&ST.last[t]; go(last!=null&&trackOf(last)===t?last:inTrack(t)[0]);});
 // GitHub 주소에서 열었을 때만 요약카드 내려받기 줄을 보인다 (파일이 거기에만 있음)
 if(/\.github\.io$/.test(location.hostname)) $('#getCard').hidden=false;
 const h0=fromHash(); ST.cur=h0!==null?h0:Math.min(Math.max(0,ST.cur|0),STEPS.length-1);
