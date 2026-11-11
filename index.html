@@ -542,7 +542,7 @@ const STEPS=[
  goal:'Claude를 쓰려면 내 계정이 있어야 합니다. 직원 각자 자기 이메일로 가입합니다.',
  todo:['인터넷 창 주소창에 <code>claude.ai</code> 를 입력합니다.',
   '<b>회원가입</b> — 내 이메일(또는 Google 계정)을 넣고, 메일로 온 인증 코드나 링크로 확인합니다.',
-  '<b>요금제</b> — Code 탭은 <b>유료 요금제(Pro 이상)</b>가 있어야 쓸 수 있습니다. 비용 처리는 회사 안내를 따릅니다.',
+  '<b>요금제</b> — Code 탭은 <b>유료 요금제(Pro 이상)</b>가 있어야 쓸 수 있습니다.',
   '채팅 화면이 뜨면 이 단계 끝입니다.'],
  prompts:[['가입 주소','site']],
  extra:()=>`<h3>이 교실 사용법</h3><div class="how">
@@ -580,7 +580,7 @@ const STEPS=[
  prompts:[['Git 내려받기 주소','git']],
  extra:()=>`<h3>설치가 안 될 때</h3><div class="tbl"><table><tr><th>증상</th><th>해결</th></tr>
   <tr><td>설치 파일 실행이 차단됨</td><td>회사 보안 설정입니다. 전산 담당자에게 설치 허용을 요청합니다.</td></tr>
-  <tr><td>Code 탭에서 "요금제 필요" 안내</td><td>유료 요금제(Pro 이상)가 필요합니다. 비용 처리는 회사 안내를 따릅니다.</td></tr>
+  <tr><td>Code 탭에서 "요금제 필요" 안내</td><td>유료 요금제(Pro 이상)가 필요합니다.</td></tr>
   <tr><td>Local을 골라도 세션이 안 열림</td><td>Git이 없거나 앱을 다시 켜지 않았습니다. Git 설치 후 앱을 완전히 닫았다가 다시 엽니다.</td></tr>
   <tr><td>확인 창(Accept / Reject)이 계속 뜸</td><td>정상입니다. Manual 모드는 바꾸기 전에 물어봅니다. 읽기·저장은 Accept.</td></tr>
   <tr><td>Word가 없음</td><td>무료 LibreOffice를 설치합니다.</td></tr></table></div>`,
@@ -1058,7 +1058,7 @@ const RENDER={
   plan:w=>{w.innerHTML=`<div class="g-wrap"><h4>요금제 고르기</h4><div class="g-plans">
     <div class="g-plan"><b>무료</b><span>채팅만 · Code 탭 없음</span></div>
     <div class="g-plan on"><b>Pro 이상</b><span>Code 탭 사용 · 이 교육에 필요</span><button class="g-btn" data-k="planPro">이 요금제 고르기</button></div></div>
-    <p class="g-mut">실제 요금제 이름과 가격은 화면에서 확인하세요. 비용 처리는 회사 안내를 따릅니다.</p></div>`;},
+    <p class="g-mut">실제 요금제 이름과 가격은 화면에서 확인하세요.</p></div>`;},
   chatHome:w=>{w.innerHTML=`<div class="g-wrap g-center"><h4>안녕하세요, 무엇을 도와드릴까요?</h4><div class="g-field" style="width:80%">메시지 입력…</div><p class="g-mut">채팅 화면이 뜨면 가입 끝입니다</p></div>`;},
   /* GitHub 화면 (모형 · 로고 없음) */
   ghNew:w=>{const g=SIM.gh; w.innerHTML=`<div class="g-wrap"><h4>Create a new repository</h4>
